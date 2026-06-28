@@ -75,3 +75,29 @@ Es el cerebro orientado al usuario. Actúa como un intermediario ("API Gateway")
     * `📁 js/`: JavaScript que corre en el navegador. Se encarga de capturar los clics del usuario, modificar el DOM y hacer solicitudes asíncronas (`fetch`) hacia el backend de Node.js.
     * `📄 index.html`: La interfaz gráfica y vista principal de la red social diseñada de forma responsiva.
 * `📄 package.json`: Archivo de configuración de Node.js donde se gestionan los scripts de arranque y las dependencias del proyecto (como `express`, `jsonwebtoken`, etc.).
+
+## Logica del Proyecto
+```text
+             Usuario
+                 │
+                 ▼
+     Frontend (HTML + Bootstrap + JS)
+                 │
+                 ▼
+          Node.js (Express)
+                 │
+        ┌────────┴────────────────────┐
+        ▼                             ▼
+  Lógica local                 Services (Fetch)
+  (Auth / Sesión)                     │
+        │                             ▼
+        │                        API .NET (C#)
+        │                             │
+        │                             ▼
+        │                          Motor de Grafos
+        │                     (En memoria - BFS/DFS)
+        ▼                
+  Base de Datos SQL
+(Permanencia: Users / Friendships)
+```
+
