@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37411.7
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core-graph-api", "Core-graph-api.csproj", "{B1EC82CB-FCFF-4480-84CD-D145E59BCCDB}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "User-Backend", "..\User-Backend\User-Backend.esproj", "{7DB40F34-20AD-6F3B-E1DF-BA9A613471A1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B1EC82CB-FCFF-4480-84CD-D145E59BCCDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1EC82CB-FCFF-4480-84CD-D145E59BCCDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1EC82CB-FCFF-4480-84CD-D145E59BCCDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1EC82CB-FCFF-4480-84CD-D145E59BCCDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DB40F34-20AD-6F3B-E1DF-BA9A613471A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DB40F34-20AD-6F3B-E1DF-BA9A613471A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DB40F34-20AD-6F3B-E1DF-BA9A613471A1}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{7DB40F34-20AD-6F3B-E1DF-BA9A613471A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DB40F34-20AD-6F3B-E1DF-BA9A613471A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DB40F34-20AD-6F3B-E1DF-BA9A613471A1}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CED12CB1-C465-478D-A9E7-C7AB7CD10490}
+	EndGlobalSection
+EndGlobal
