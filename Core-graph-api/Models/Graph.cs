@@ -2,34 +2,50 @@
 {
     public class Graph
     {
-        // Diccionario: ID de Usuario -> Lista de usuarios a los que envió solicitud/sigue
-        private Dictionary<int, List<Node>> adjacencyList;
+        // Ahora la clave es el ID del usuario origen, 
+        // y el valor es la lista de ARISTAS (Edges) que salen de él.
+        private Dictionary<int, List<Edge>> adjacencyList;
 
         public Graph()
         {
-            adjacencyList = new Dictionary<int, List<Node>>();
+            adjacencyList = new Dictionary<int, List<Edge>>();
         }
 
-        // 1. Agregar un usuario al sistema
+        // 1. Agregar un usuario (Nodo) al grafo
         public void AddNode(Node node)
         {
             if (!adjacencyList.ContainsKey(node.Id))
             {
-                adjacencyList[node.Id] = new List<Node>();
+                adjacencyList[node.Id] = new List<Edge>();
             }
         }
 
-        // 2. Crear una relación direccionada (Enviar solicitud de amistad)
-        public void AddEdge(int sourceId, Node targetNode)
+        // 2. Crear una relación direccionada usando la clase Edge de verdad
+        public void AddEdge(Node sourceNode, Node targetNode)
         {
-            if (adjacencyList.ContainsKey(sourceId))
+            if (adjacencyList.ContainsKey(sourceNode.Id))
             {
-                // Evitamos duplicar la arista de ida
-                if (!adjacencyList[sourceId].Exists(n => n.Id == targetNode.Id))
+                // Verificamos si ya existe esta arista para no duplicarla
+                bool exists = adjacencyList[sourceNode.Id].Any(edge => edge.Target.Id == targetNode.Id);
+
+                if (!exists)
                 {
-                    adjacencyList[sourceId].Add(targetNode);
+                    // Instanciamos el objeto Edge físicamente
+                    Edge newEdge = new Edge(sourceNode, targetNode);
+
+                    // Lo guardamos en la lista del nodo origen
+                    adjacencyList[sourceNode.Id].Add(newEdge);
                 }
             }
+        }
+
+        // 3. Método auxiliar para obtener los "vecinos" (amigos a los que apunta)
+        public List<Node> GetNeighbors(int userId)
+        {
+            if (!adjacencyList.ContainsKey(userId)) return new List<Node>();
+
+            // Transformamos la lista de Edges en una lista de Nodes (los destinos)
+            return adjacencyList[userId].Select(edge => edge.Target).ToList();
         }
     }
 }
