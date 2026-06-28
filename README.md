@@ -43,6 +43,7 @@ alpacApp/
     │   └── index.html        # Vista principal de alpacApp
     └── package.json
 ```
+---
 
 ## 📂 Descripción Detallada de la Estructura
 
