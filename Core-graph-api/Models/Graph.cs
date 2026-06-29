@@ -47,5 +47,17 @@
             // Transformamos la lista de Edges en una lista de Nodes (los destinos)
             return adjacencyList[userId].Select(edge => edge.Target).ToList();
         }
-    }
+        public Node GetNode(int userId)
+        {
+            if (!adjacencyList.ContainsKey(userId)) return null;
+            
+
+            Edge uwu = adjacencyList[userId].FirstOrDefault();
+
+            if (uwu == null) return null;
+
+            return uwu.Source;
+        }
+    } 
+
 }

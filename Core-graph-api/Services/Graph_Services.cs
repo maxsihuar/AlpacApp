@@ -9,32 +9,46 @@ namespace Core_graph_api.Services
         {
             _graph = graph;
         }
-
+        public void Add_User_Void(Node uwu)
+        {
+            _graph.AddNode(uwu);
+            _graph.AddEdge(uwu, uwu); // Agregar una arista desde el nodo hacia sí mismo
+        }
+        public Node Search_User(int starrId)
+        {
+            return _graph.GetNode(starrId);
+        }
         public List<Node> BFS_Graph(int startId)
         {
-            Queue<int> cola = new Queue<int>();
+            Queue<(int id, int nivel)> cola = new Queue<(int, int)>();
             HashSet<int> visitados = new HashSet<int>();
             List<Node> recorrido = new List<Node>();
 
-            cola.Enqueue(startId);
+            // El nodo inicial está en el nivel 0
+            cola.Enqueue((startId, 0));
             visitados.Add(startId);
 
             while (cola.Count > 0)
             {
-                int actual = cola.Dequeue();
+                var (actual, nivel) = cola.Dequeue();
 
                 recorrido.Add(_graph.GetNode(actual));
 
-                foreach (Node vecino in _graph.GetNeighbors(actual))
+                // Si ya estamos en el segundo nivel, no seguimos expandiendo
+                if (nivel == 2)
+                    continue;
+
+                List<Node> vecinos = _graph.GetNeighbors(actual);
+
+                foreach (Node vecino in vecinos)
                 {
                     if (!visitados.Contains(vecino.Id))
                     {
                         visitados.Add(vecino.Id);
-                        cola.Enqueue(vecino.Id);
+                        cola.Enqueue((vecino.Id, nivel + 1));
                     }
                 }
             }
-
             return recorrido;
         }
     }
