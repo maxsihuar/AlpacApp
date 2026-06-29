@@ -9,7 +9,7 @@ namespace Core_graph_api.Services
         {
             _graph = graph;
         }
-        public void Add_User_Void(Node uwu)
+        public void Add_User(Node uwu)
         {
             _graph.AddNode(uwu);
             _graph.AddEdge(uwu, uwu); // Agregar una arista desde el nodo hacia sí mismo

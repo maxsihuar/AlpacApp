@@ -54,7 +54,7 @@ namespace Core_graph_api.Controllers
         [HttpGet("user/{Id}")]
         public ActionResult<Node> GetUser(int Id)
         {
-            Node user = _graph_services.SearchUser(Id);
+            Node user = _graph_services.Search_User(Id);
 
             if (user == null)
             {
