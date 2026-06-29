@@ -2,6 +2,7 @@
 using Core_graph_api.Services;
 using Core_graph_api.Dtos;
 using Microsoft.AspNetCore.Mvc;
+using Core_graph_api.Dtos.Core_graph_api.Dtos;
 
 
 //Documentacion: https://learn.microsoft.com/es-es/aspnet/core/web-api/?view=aspnetcore-10.0
@@ -19,21 +20,6 @@ namespace Core_graph_api.Controllers
             _graph_services = graph_services;
         }
 
-        // POST: Petición interna (usualmente desde Node) para CREAR formalmente la arista en el grafo
-        [HttpPost("connect_nodes")]
-        public IActionResult PostConnectNodes([FromBody] FriendshipDto relation)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            // C# se limita a su especialidad: conectar los nodos en memoria/grafo
-            _graph_services.ConnectNodes(relation.UserSourceId, relation.UserTargetId);
-
-            return StatusCode(StatusCodes.Status201Created);
-        }
-
         //POST: Peticiion para recibir y crear un nuevo nodo en el grafo
         [HttpPost("new_user")]
         [ProducesResponseType<Node>(StatusCodes.Status201Created)]
@@ -45,7 +31,7 @@ namespace Core_graph_api.Controllers
                 return BadRequest(ModelState);
             }
 
-            _graph_services.AddNode(newUser);
+            _graph_services.Add_User(newUser);
 
             return StatusCode(StatusCodes.Status201Created);
         }
@@ -68,18 +54,28 @@ namespace Core_graph_api.Controllers
         [HttpPost("add_friend")]
         [ProducesResponseType<Node>(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult<Node> PostAddFriend([FromBody] int Id_user, int Id)
+        public IActionResult PostAddFriend([FromBody] FriendshipRequestDto dt)
         {
-
+            if (!ModelState.IsValid) 
+            {
+                return BadRequest(ModelState);
+            }
+            _graph_services.Add_Edge(dt.SourceId, dt.TargetId);
+            return StatusCode(StatusCodes.Status201Created);
         }
 
         //POST: Peticion para aceptar un nuevo amigos(arista)
         [HttpPost("accept_frien")]
         [ProducesResponseType<Node>(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult<Node> PostAcceptFriend([FromBody] int Id_user, int Id)
+        public IActionResult PostAcceptFriend([FromBody] FriendshipRequestDto dt)
         {
-
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            _graph_services.Add_Edge(dt.SourceId, dt.TargetId);
+            return StatusCode(StatusCodes.Status201Created);
         }
     }
 }
