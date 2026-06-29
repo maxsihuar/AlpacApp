@@ -18,6 +18,17 @@ namespace Core_graph_api.Services
         {
             return _graph.GetNode(starrId);
         }
+        public Edge Add_Edge(int sourceId, int targetId)
+        {
+            Node sourceNode = _graph.GetNode(sourceId);
+            Node targetNode = _graph.GetNode(targetId);
+            if (sourceNode == null || targetNode == null)
+            {
+                //Console.WriteLine("uwu")
+            }
+            _graph.AddEdge(sourceNode, targetNode);
+            return new Edge(sourceNode, targetNode);
+        }
         public List<Node> BFS_Graph(int startId)
         {
             Queue<(int id, int nivel)> cola = new Queue<(int, int)>();
