@@ -2,7 +2,6 @@
   <ItemGroup>
     <Folder Include="public\js\" />
     <Folder Include="public\css\" />
-    <Folder Include="src\controllers\" />
     <Folder Include="src\middlewares\" />
     <Folder Include="src\services\" />
   </ItemGroup>
