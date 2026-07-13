@@ -1,5 +1,8 @@
 function Navbar() {
     const header = document.querySelector('header');
+    if(header==null){
+        return;
+    }
     header.innerHTML = `
 <nav class="navbar sticky-top navbar-expand-lg bg-dark p-3" data-bs-theme="dark" >
     <div class="container-fluid ps-4">
@@ -32,6 +35,9 @@ function Navbar() {
 
 function LoginForm() {
     const main = document.querySelector('main');
+    if (main==null){
+        return;
+    }
     main.innerHTML = `
         <main class=" min-vh-100">
         <div class="row g-0 min-vh-100 w-100 m-0">
