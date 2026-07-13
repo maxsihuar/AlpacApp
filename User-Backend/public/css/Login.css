@@ -1,0 +1,46 @@
+div {
+    user-select: none; /* Evita que se pueda seleccionar el área */
+    outline: none; /* Quita cualquier línea de foco azul/blanca */
+    -webkit-user-select: none;
+}
+
+.bg-login {
+    background-color: rgba(256, 193, 95, 0.9);
+}
+
+.login {
+    /* Un morado casi negro con 40% de transparencia */
+    background-color: rgba(39,13,76,0.9);
+    /* Un borde muy fino y semi-transparente para definir la tarjeta */
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    /* El truco mágico: desenfoca lo que está detrás de la tarjeta */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    /* Bordes redondeados para que combine con la simpatía de la alpaca */
+    border-radius: 16px;
+    /* Una sombra suave para despegarlo del fondo */
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.logo-app {
+    /* Crea un resplandor suave de color blanco/lila alrededor de todo el logo */
+    filter: drop-shadow(2px 2px 6px rgba(255, 255, 255, 0.25));
+    /* O si prefieres una sombra oscura que lo despegue del fondo: */
+    /* filter: drop-shadow(2px 4px 8px rgba(0, 0, 0, 0.6)); */
+}
+.img-login {
+    background-color: #270D4E;
+}
+
+.btn.btn-login {
+    color: rgba(245, 5, 114, 0.85) !important;
+    border-color: rgba(245, 5, 114, 0.75) !important;
+    background-color: transparent !important;
+}
+
+/* Para cuando pases el mouse por encima */
+.btn.btn-login:hover {
+    color: #1a0b2e !important;
+    background-color: rgb(245, 5, 114) !important;
+    border-color: rgb(145, 5, 114) !important;
+}
