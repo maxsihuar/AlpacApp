@@ -1,20 +1,3 @@
-<<<<<<< HEAD
-function Navbar() {
-    const header = document.querySelector('header');
-    if(header==null){
-        return;
-    }
-    header.innerHTML = `
-<nav class="navbar sticky-top navbar-expand-lg bg-dark p-3" data-bs-theme="dark" >
-    <div class="container-fluid ps-4">
-        <a class="navbar-brand pe-4 text-center" href="#">
-            <img src="image/AlpacAPP_Logo-removebg-preview.png" alt="Logo" width="60" height="60" class="d-inline-block align-text-center">
-                AlpacApp
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-=======
 export const Navbar = `
         <nav class="navbar sticky-top navbar-expand-lg bg-dark p-3" data-bs-theme="dark">
             <div class="container-fluid">
@@ -22,7 +5,6 @@ export const Navbar = `
                     <img src="image/AlpacAPP_Logo-removebg-preview.png" alt="Logo" width="60" height="60" class="d-inline-block align-text-center">
                     AlpacApp
                 </a>
->>>>>>> 85fa74f (Agregando mas componentes)
 
                 <div class="d-flex align-items-center order-lg-last">
                     <button class="navbar-toggler me-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,16 +42,7 @@ export const Navbar = `
         </nav>
 `;
 
-<<<<<<< HEAD
-function LoginForm() {
-    const main = document.querySelector('main');
-    if (main==null){
-        return;
-    }
-    main.innerHTML = `
-=======
 export const LoginForm = `
->>>>>>> 85fa74f (Agregando mas componentes)
         <main class=" min-vh-100">
         <div class="row g-0 min-vh-100 w-100 m-0">
             <div class="bg-login col-12 col-md-6 d-flex justify-content-center align-items-center p-4 p-md-5">
@@ -109,10 +82,6 @@ export const LoginForm = `
         </div>
     </main>`;
 
-<<<<<<< HEAD
-document.addEventListener('DOMContentLoaded', LoginForm);
-document.addEventListener('DOMContentLoaded', Navbar);
-=======
 export const MainChat = `
 <div class="w-100 bg-light h-100">
     <div class="d-flex flex-column h-100">
@@ -190,5 +159,5 @@ export const OffCanvasChat_inactivo = `
                             </div>
                             <p class="mb-0 small text-muted text-truncate">¡Dale, nos vemos luego!</p>
                         </div>
-                    </a>`;
->>>>>>> 85fa74f (Agregando mas componentes)
+                    </a>`
+    ;
