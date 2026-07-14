@@ -11,5 +11,28 @@ class MessageService {
 
         return message;
     }
+    async getAllMessages() {
+        const db = getDatabase();
+        const collection = db.collection("messages");
+        const messages = await collection.find().toArray();
+        return messages;
+    }
+    async getConversation(senderId, receiverId) {
+        const db = getDatabase();
+        const collection = db.collection("messages");
+        const messages = await collection.find({
+            $or: [
+                {
+                    senderId : senderId,
+                    receiverId :  receiverId
+                },
+                {
+                    senderId : receiverId,
+                    receiverId : senderId
+                }
+            ]
+        }).toArray();
+        return messages;
+    }
 }
 module.exports = new MessageService();

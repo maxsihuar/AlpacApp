@@ -19,7 +19,7 @@ export const Navbar = `
                             <li><a id="dropdown-perfil" class="dropdown-item" href="#">Perfil</a></li>
                             <li><a id="dropdown-ajustes" class="dropdown-item" href="#">Ajustes</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a id="dropdown-salir" class="dropdown-item" href="#">Cerrar Sesión</a></li>
+                            <li><a id="dropdown-salir" class="dropdown-item" href="#">Cerrar SesiÃ³n</a></li>
                         </ul>
                     </div>
                 </div>
@@ -119,12 +119,12 @@ export const MainChat = `
 </div>`;
 
 export const OffCanvas = `
-        <!-- El botón vive dentro del componente y solo se ve en móviles -->
+        <!-- El botÃ³n vive dentro del componente y solo se ve en mÃ³viles -->
         <button class="btn btn-success d-lg-none position-fixed start-0 ms-3 z-3 shadow-lg" type="button" data-bs-toggle="offcanvas" data-bs-target="#asideChats" aria-controls="asideChats" style="bottom: 75px !important;">
             Ver Chats
         </button>
 
-        <!-- El menú lateral: En móviles (menor a lg) usa el sistema offcanvas flotante. En PC (lg) se vuelve un bloque normal -->
+        <!-- El menÃº lateral: En mÃ³viles (menor a lg) usa el sistema offcanvas flotante. En PC (lg) se vuelve un bloque normal -->
         <aside class="offcanvas-lg offcanvas-start bg-dark border-end text-white p-0 h-100 w-100" tabindex="-1" id="asideChats" aria-labelledby="asideChatsLabel" style="height: 100%;">
 
             <div class="offcanvas-header bg-dark border-bottom d-lg-none">
@@ -156,7 +156,7 @@ export const OffCanvasChat_activo = `
                                 <h6 class="mb-1 text-truncate">Soporte AlpacApp</h6>
                                 <small class="text-white-50 flex-shrink-0">1:05 PM</small>
                             </div>
-                            <p class="mb-0 small text-white-50 text-truncate">¿Viste el nuevo logo?</p>
+                            <p class="mb-0 small text-white-50 text-truncate">Â¿Viste el nuevo logo?</p>
                         </div>
                     </a>
 `;
@@ -166,9 +166,9 @@ export const OffCanvasChat_inactivo = `
                         <img src="image/AlpacAPP Usuario.svg" width="40" height="40" class="rounded-circle me-3" alt="Avatar">
                         <div class="w-100 overflow-hidden">
                             <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-1 text-truncate">Juan Pérez</h6>
+                                <h6 class="mb-1 text-truncate">Juan PÃ©rez</h6>
                                 <small class="text-muted flex-shrink-0">Ayer</small>
                             </div>
-                            <p class="mb-0 small text-muted text-truncate">¡Dale, nos vemos luego!</p>
+                            <p class="mb-0 small text-muted text-truncate">Â¡Dale, nos vemos luego!</p>
                         </div>
                     </a>`;

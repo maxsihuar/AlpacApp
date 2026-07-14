@@ -6,7 +6,14 @@ async function messageRoutes(fastify, options) {
         "/messages",
         messageController.sendMessage
     );
-
+    fastify.get(
+        "/messages",
+        messageController.getAllMessages
+    );
+    fastify.get(
+        "/messages/conversation/:senderId/:receiverId",
+        messageController.getConversation
+    );
 }
 
 module.exports = messageRoutes;

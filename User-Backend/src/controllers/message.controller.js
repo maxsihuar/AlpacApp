@@ -28,7 +28,32 @@ class MessageController {
         }
 
     }
+    async getAllMessages(request, reply) {
+        try {
+            const messages = await messageService.getAllMessages();
 
+            return reply.code(200).send(messages);
+        }
+        catch (error) {
+            console.error(error);
+            return reply.code(500).send({
+                message: "Error al obtener los mensajes."
+            });
+        }
+    }
+
+    async getConversation(request, reply) {
+        try {
+            const messages = await messageService.getConversation(Number(request.params.senderId), Number(request.params.receiverId))
+            return reply.code(200).send(messages);
+        }
+        catch (error) {
+            console.error(error);
+            return reply.code(500).send({
+                message: "Error al obtener la conversación."
+            });
+        }
+    }
 }
 
 module.exports = new MessageController();
