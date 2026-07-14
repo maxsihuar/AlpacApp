@@ -14,14 +14,14 @@ namespace Core_graph_api.Services
             _graph.AddNode(uwu);
             _graph.AddEdge(uwu, uwu); // Agregar una arista desde el nodo hacia sí mismo
         }
-        public Node Search_User(int starrId)
+        public Node? Search_User(int starrId)
         {
             return _graph.GetNode(starrId);
         }
         public Edge Add_Edge(int sourceId, int targetId)
         {
-            Node sourceNode = _graph.GetNode(sourceId);
-            Node targetNode = _graph.GetNode(targetId);
+            Node? sourceNode = _graph.GetNode(sourceId);
+            Node? targetNode = _graph.GetNode(targetId);
             if (sourceNode == null || targetNode == null)
             {
                 //Console.WriteLine("uwu")
@@ -29,11 +29,21 @@ namespace Core_graph_api.Services
             _graph.AddEdge(sourceNode, targetNode);
             return new Edge(sourceNode, targetNode);
         }
-        public List<Node> BFS_Graph(int startId)
+
+        public bool ValidarEdge(string user, string password)
+        {
+            Node? u = _graph.GetNodebyUser(user, password);
+
+            if(u != null) { return true;
+            }
+            return false;
+        }
+
+        public List<Node?> BFS_Graph(int startId)
         {
             Queue<(int id, int nivel)> cola = new Queue<(int, int)>();
             HashSet<int> visitados = new HashSet<int>();
-            List<Node> recorrido = new List<Node>();
+            List<Node?> recorrido = new List<Node?>();
 
             // El nodo inicial está en el nivel 0
             cola.Enqueue((startId, 0));

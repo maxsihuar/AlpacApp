@@ -2,7 +2,6 @@
 using Core_graph_api.Services;
 using Core_graph_api.Dtos;
 using Microsoft.AspNetCore.Mvc;
-using Core_graph_api.Dtos.Core_graph_api.Dtos;
 
 
 //Documentacion: https://learn.microsoft.com/es-es/aspnet/core/web-api/?view=aspnetcore-10.0
@@ -36,11 +35,31 @@ namespace Core_graph_api.Controllers
             return StatusCode(StatusCodes.Status201Created);
         }
 
+        //POst: Peticion para validar un usuario existente en el grafo
+        [HttpPost("validate_user")]
+        [ProducesResponseType<Node>(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public IActionResult PostValidateUser([FromBody] DataUserLogin user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            bool flag = _graph_services.ValidarEdge(user.User, user.Password);
+            if (flag == false)
+            {
+                // 401 Unauthorized es el código estándar para credenciales incorrectas
+                return Unauthorized(new { message = "Usuario o contraseña incorrectos." });
+            }
+            return Ok(flag);
+        }
+
         //GET: Peticion para obtener un usuario existente
         [HttpGet("user/{Id}")]
         public ActionResult<Node> GetUser(int Id)
         {
-            Node user = _graph_services.Search_User(Id);
+            Node? user = _graph_services.Search_User(Id);
 
             if (user == null)
             {

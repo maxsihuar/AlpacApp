@@ -34,7 +34,7 @@ export const Navbar = `
 
                     <form class="d-flex mt-2 mt-lg-0" role="search">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                        <button class="btn btn-outline-success" type="submit">Search</button>
+                        <button class="btn-navbar btn btn-outline-success" type="submit">Search</button>
                     </form>
                 </div>
 
@@ -43,44 +43,56 @@ export const Navbar = `
 `;
 
 export const LoginForm = `
-        <main class=" min-vh-100">
-        <div class="row g-0 min-vh-100 w-100 m-0">
-            <div class="bg-login col-12 col-md-6 d-flex justify-content-center align-items-center p-4 p-md-5">
+    <main class=" min-vh-100">
+    <div class="row g-0 min-vh-100 w-100 m-0">
+        <div class="bg-login col-12 col-md-6 d-flex justify-content-center align-items-center p-4 p-md-5">
 
-                <!-- TARJETA LOGIN (Separada de la columna) -->
-                <div class="login w-100 p-4 p-sm-5 text-center text-white overflow-hidden" style="max-width: 500px;">
-                    <div>
-                        <img src="image/AlpacAPP Logo Secundario.svg" class="img-fluid logo-app h-50" />
-                    </div>
-                    <section class="mt-4 mb-5">
-                        <h2>Bienvenidos a AlpacApp</h2>
-                        <span>La mejor aplicaci&oacute;n de mensajer&iacute;a de Alcapas</span>
-                    </section>
+            <!-- TARJETA LOGIN -->
+            <div class="login w-100 p-4 p-sm-5 text-center text-white overflow-hidden" style="max-width: 500px;">
+                <div>
+                    <img src="image/AlpacAPP Logo Secundario.svg" class="img-fluid logo-app h-50" />
+                </div>
+                <section class="mt-4 mb-5">
+                    <h2>Bienvenidos a AlpacApp</h2>
+                    <span>La mejor aplicaci&oacute;n de mensajer&iacute;a de Alpacas</span>
+                </section>
+
+                <!-- 1. ENVOLVEMOS TODO EN UN <form> CON SU RESPECTIVO ID -->
+                <form id="login-form">
+                    
                     <div class="mb-4 row" data-bs-theme="dark">
-                        <label for="staticEmail" class="col-sm-3 col-form-label">Email</label>
+                        <label for="inputUser" class="col-sm-3 col-form-label">Email</label>
                         <div class="col-sm-9">
-                            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+                            <!-- 2. CAMBIADO: name="User" (coincide con C#) y agregado "required" -->
+                            <input type="text" class="form-control" id="inputUser" name="User" placeholder="name@example.com">
                         </div>
                     </div>
+
                     <div class="mb-3 row" data-bs-theme="dark">
                         <label for="inputPassword" class="col-sm-3 col-form-label pe-3">Password</label>
                         <div class="col-sm-9">
-                            <input type="password" class="form-control" id="inputPassword">
+                            <!-- 3. CAMBIADO: name="Password" (coincide con C#) y agregado "required" -->
+                            <input type="password" class="form-control" id="inputPassword" name="Password" placeholder="Password" required>
                         </div>
                     </div>
+
                     <div class="d-flex justify-content-center gap-2">
+                        <!-- El botón submit ahora sí enviará el formulario -->
                         <button type="submit" id="btn-login-submit" class="btn btn-login">Entrar</button>
                         <button type="button" id="btn-registrar" class="btn btn-login">Registrarse</button>
                     </div>
-                </div>
+
+                </form>
 
             </div>
 
-            <div class="col img-login w-100 d-flex justify-content-center align-items-center text-center overflow-hidden">
-                <img src="image/AlpacAPP Carga.svg" class=" w-100 h-100 img-fluid" alt="AlpacApp" />
-            </div>
         </div>
-    </main>`;
+
+        <div class="col img-login w-100 d-flex justify-content-center align-items-center text-center overflow-hidden">
+            <img src="image/AlpacAPP Carga.svg" class=" w-100 h-100 img-fluid" alt="AlpacApp" />
+        </div>
+    </div>
+</main>`;
 
 export const MainChat = `
 <div class="w-100 bg-light h-100">
@@ -100,7 +112,7 @@ export const MainChat = `
         <div class="p-3 bg-white border-top">
             <form class="d-flex">
                 <input type="text" class="form-control me-2" placeholder="Escribe un mensaje...">
-                <button class="btn btn-success" type="submit">Enviar</button>
+                <button class="btn-chat btn btn-success" type="submit">Enviar</button>
             </form>
         </div>
     </div>
@@ -159,5 +171,4 @@ export const OffCanvasChat_inactivo = `
                             </div>
                             <p class="mb-0 small text-muted text-truncate">¡Dale, nos vemos luego!</p>
                         </div>
-                    </a>`
-    ;
+                    </a>`;
