@@ -23,14 +23,14 @@ namespace Core_graph_api.Controllers
         [HttpPost("new_user")]
         [ProducesResponseType<Node>(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult PostAddNewUser([FromBody] Node newUser)
+        public IActionResult PostAddNewUser([FromBody] DataUserRegister newUser)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            _graph_services.Add_User(newUser);
+            
+            _graph_services.Add_User(newUser.Name, newUser.LastName, newUser.Email, newUser.Password);
 
             return StatusCode(StatusCodes.Status201Created);
         }
@@ -46,7 +46,7 @@ namespace Core_graph_api.Controllers
             {
                 return BadRequest(ModelState);
             }
-            bool flag = _graph_services.ValidarEdge(user.User, user.Password);
+            bool flag = _graph_services.ValidarEdge(user.Email, user.Password);
             if (flag == false)
             {
                 // 401 Unauthorized es el código estándar para credenciales incorrectas

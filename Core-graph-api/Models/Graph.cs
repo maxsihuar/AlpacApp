@@ -58,11 +58,11 @@
 
             return uwu.Source;
         }
-        public Node? GetNodebyUser(string userId, string pass)
+        public Node? GetNodebyUser(string email, string pass)
         {
             foreach(List<Edge> l in adjacencyList.Values)
             {
-                if (l[0].Source.Name == userId && l[0].Source.Contraseña == pass)
+                if (l[0].Source.Email == email && l[0].Source.Contraseña == pass)
                 {
                     return l[0].Source;
                 }

@@ -64,8 +64,7 @@ using (var scope = app.Services.CreateScope())
     var graphServices = scope.ServiceProvider.GetRequiredService<Graph_Services>();
     try
     {
-        var testUser = new Node(1, "Edwin Carrasco", "Contrasena segura");
-        graphServices.Add_User(testUser);
+        graphServices.Add_User("Edwin", "Carrasco Poblete", "EdwinPoblete@gmail.com", "Contrasena segura");
     }
     catch (Exception ex)
     {

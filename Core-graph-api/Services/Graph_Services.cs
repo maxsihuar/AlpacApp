@@ -9,8 +9,9 @@ namespace Core_graph_api.Services
         {
             _graph = graph;
         }
-        public void Add_User(Node uwu)
+        public void Add_User(string name, string lastname, string email, string password)
         {
+            Node uwu = new Node(name.GetHashCode(), name, lastname, email, password);
             _graph.AddNode(uwu);
             _graph.AddEdge(uwu, uwu); // Agregar una arista desde el nodo hacia sí mismo
         }
@@ -30,9 +31,9 @@ namespace Core_graph_api.Services
             return new Edge(sourceNode, targetNode);
         }
 
-        public bool ValidarEdge(string user, string password)
+        public bool ValidarEdge(string email, string password)
         {
-            Node? u = _graph.GetNodebyUser(user, password);
+            Node? u = _graph.GetNodebyUser(email, password);
 
             if(u != null) { return true;
             }

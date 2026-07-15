@@ -18,6 +18,7 @@ const start = async () => {
         });
 
         await fastify.register(require("./routes/message.routes"));
+
         console.log(fastify.printRoutes());
         await fastify.listen({
             port: process.env.PORT

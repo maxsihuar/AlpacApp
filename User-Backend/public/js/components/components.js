@@ -1,4 +1,5 @@
 export const Navbar = `
+<header>
         <nav class="navbar sticky-top navbar-expand-lg bg-dark p-3" data-bs-theme="dark">
             <div class="container-fluid">
                 <a class="navbar-brand text-center" href="#">
@@ -40,6 +41,7 @@ export const Navbar = `
 
             </div>
         </nav>
+ </header>
 `;
 
 export const LoginForm = `
@@ -63,8 +65,8 @@ export const LoginForm = `
                     <div class="mb-4 row" data-bs-theme="dark">
                         <label for="inputUser" class="col-sm-3 col-form-label">Email</label>
                         <div class="col-sm-9">
-                            <!-- 2. CAMBIADO: name="User" (coincide con C#) y agregado "required" -->
-                            <input type="text" class="form-control" id="inputUser" name="User" placeholder="name@example.com">
+                            <!-- 2. CAMBIADO: name="Email" (coincide con C#) y agregado "required" -->
+                            <input type="text" class="form-control" id="inputUser" name="Email" placeholder="name@example.com">
                         </div>
                     </div>
 
@@ -79,7 +81,7 @@ export const LoginForm = `
                     <div class="d-flex justify-content-center gap-2">
                         <!-- El botón submit ahora sí enviará el formulario -->
                         <button type="submit" id="btn-login-submit" class="btn btn-login">Entrar</button>
-                        <button type="button" id="btn-registrar" class="btn btn-login">Registrarse</button>
+                        <button type="button" id="btn-register" class="btn btn-login">Registrarse</button>
                     </div>
 
                 </form>
@@ -93,6 +95,85 @@ export const LoginForm = `
         </div>
     </div>
 </main>`;
+
+export const RegisterFomr = `
+    <main class=" min-vh-100">
+        <div class="row g-0 min-vh-100 w-100 m-0">
+            <div class="col img-login w-100 d-flex justify-content-center align-items-center text-center overflow-hidden">
+                <img src="image/AlpacApp Registrar.svg" class=" w-100 h-100 img-fluid" alt="AlpacApp" />
+            </div>
+
+            <div class="bg-login col-12 col-md-6 d-flex justify-content-center align-items-center p-4 p-md-5">
+
+                <!-- TARJETA LOGIN -->
+                <div class="login w-100 p-4 p-sm-5 text-center text-white overflow-hidden" style="max-width: 500px;">
+                    <div>
+                        <img src="image/AlpacAPP Logo Secundario.svg" class="img-fluid logo-app h-50" />
+                    </div>
+                    <section class="mt-4 mb-5">
+                        <h2>Se parte de AlpacApp</h2>
+                        <span>Unete a nuestra gran comunidad</span>
+                    </section>
+
+                    <!-- 1. ENVOLVEMOS TODO EN UN <form> CON SU RESPECTIVO ID -->
+                    <form id="register-form">
+
+                        <div class="mb-4 row" data-bs-theme="dark">
+                            <label for="inputName" class="col-sm-3 col-form-label">Nombres</label>
+                            <div class="col-sm-9">
+                                <!-- 2. CAMBIADO: name="Name" (coincide con C#) y agregado "required" -->
+                                <input type="text" class="form-control" id="inputName" name="Name" placeholder="Your name">
+                            </div>
+                        </div>
+
+                        <div class="mb-4 row" data-bs-theme="dark">
+                            <label for="inputAp" class="col-sm-3 col-form-label">Apellidos</label>
+                            <div class="col-sm-9">
+                                <!-- 2. CAMBIADO: name="LastName" (coincide con C#) y agregado "required" -->
+                                <input type="text" class="form-control" id="inputAp" name="LastName" placeholder="Your last name">
+                            </div>
+                        </div>
+
+                        <div class="mb-4 row" data-bs-theme="dark">
+                            <label for="inputUser" class="col-sm-3 col-form-label">Email</label>
+                            <div class="col-sm-9">
+                                <!-- 2. CAMBIADO: name="Email" (coincide con C#) y agregado "required" -->
+                                <input type="text" class="form-control" id="inputUser" name="Email" placeholder="name@example.com">
+                            </div>
+                        </div>
+
+                        <div class="mb-3 row" data-bs-theme="dark">
+                            <label for="inputPassword" class="col-sm-3 col-form-label pe-3">Password</label>
+                            <div class="col-sm-9">
+                                <!-- 3. CAMBIADO: name="Password" (coincide con C#) y agregado "required" -->
+                                <input type="password" class="form-control" id="inputPassword" name="Password" placeholder="Password" required>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-center gap-2">
+                            <!-- El botón submit ahora sí enviará el formulario -->
+                            <button type="submit" id="btn-registrar" class="btn btn-login">Registrarse</button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </main>`;
+
+export const ContainerChat = `
+    <div class="container-fluid p-0 overflow-hidden" style="height: calc(100vh - 90px);">
+        <div class="row g-0 h-100 w-100 m-0">
+
+
+            <div id="aside" class="col-lg-3 p-0"></div>
+
+            <div id="main" class="col-12 col-lg-9 p-0 h-100"></div>
+
+        </div>
+    </div>`;
 
 export const MainChat = `
 <div class="w-100 bg-light h-100">
@@ -119,7 +200,6 @@ export const MainChat = `
 </div>`;
 
 export const OffCanvas = `
-        <!-- El botÃ³n vive dentro del componente y solo se ve en mÃ³viles -->
         <button class="btn btn-success d-lg-none position-fixed start-0 ms-3 z-3 shadow-lg" type="button" data-bs-toggle="offcanvas" data-bs-target="#asideChats" aria-controls="asideChats" style="bottom: 75px !important;">
             Ver Chats
         </button>
@@ -172,3 +252,21 @@ export const OffCanvasChat_inactivo = `
                             <p class="mb-0 small text-muted text-truncate">Â¡Dale, nos vemos luego!</p>
                         </div>
                     </a>`;
+
+export const ContainerCards = `
+    <div class="container-fluid px-3 px-md-5 py-3">
+        <h3 id="Search_text" class="text-start">Personas encontradas</h3>
+        <div id="container-cards" class="row mt-4">
+        </div>
+    </div>`;
+
+export const CardPeople = `
+            <div class="col-sm-4 mb-3 mb-sm-0 pb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Special title treatment</h5>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>`;

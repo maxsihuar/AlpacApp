@@ -17,7 +17,7 @@ export async function RequestEntrar(e) {
     const dForm = new FormData(form);
     const data = Object.fromEntries(dForm.entries());
 
-    alert(`Datos enviados:\nUsuario: ${data.User}\nContraseña: ${data.Password}`);
+    alert(`Datos enviados:\nEmail: ${data.Email}\nContraseña: ${data.Password}`);
 
     try {
         const response = await fetch(`${ CSHARP_API_URL }/api/Graph_Controllers/validate_user`, {
@@ -46,6 +46,53 @@ export async function RequestEntrar(e) {
             alert('¡Validación exitosa!');
             // Aquí puedes redirigir al usuario, por ejemplo:
             // window.location.href = '/dashboard';
+        }
+
+    } catch (error) {
+        btn.disabled = false;
+
+        console.error('Error en la petición de ingreso:', error);
+        alert(error.message);
+    }
+}
+
+export async function RequestRegistrar(e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const btn = form.querySelector('#btn-registrar');
+
+    btn.disabled = true;
+
+
+    const dForm = new FormData(form);
+    const data = Object.fromEntries(dForm.entries());
+
+    alert(`Datos enviados:\nName: ${data.Name}\nLastName: ${data.LastName} \nContraseña: ${data.Password}` );
+
+    try {
+        const response = await fetch(`${CSHARP_API_URL}/api/Graph_Controllers/new_user`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            // Escuchamos el 401 (No autorizado) en lugar del 404
+            if (response.status === 400) {
+                throw new Error('Formato no valido.');
+            }
+            // Si realmente es un 404, ahora sí sabemos que es un problema de ruta/servidor
+            if (response.status === 404) {
+                throw new Error('No se pudo conectar con el servidor (Ruta no encontrada).');
+            }
+            throw new Error('Ocurrió un error inesperado en el servidor.');
+        }
+
+        if (response.status == 201) {
+            alert('¡Usuario registrado exitosamente!');
         }
 
     } catch (error) {
