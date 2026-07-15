@@ -4,6 +4,9 @@ const { MongoClient } = require("mongodb");
 
 const uri = process.env.MONGO_URI;
 
+console.log("Working directory:", process.cwd());
+console.log("URI:", process.env.MONGO_URI);
+console.log("Database:", process.env.DATABASE_NAME);
 const client = new MongoClient(uri);
 
 let database = null;
@@ -22,6 +25,8 @@ async function connectDatabase() {
     catch (error) {
 
         console.error("❌ Error al conectar con MongoDB:", error);
+        process.exit(1);
+
 
     }
 
