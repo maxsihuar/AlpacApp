@@ -1,5 +1,6 @@
 const Message = require("../models/message.model");
 const { getDatabase } = require("../config/database");
+const { ObjectId } = require("mongodb");
 class MessageService {
 
     async sendMessage(senderId, receiverId, content) {
@@ -23,16 +24,42 @@ class MessageService {
         const messages = await collection.find({
             $or: [
                 {
-                    senderId : senderId,
-                    receiverId :  receiverId
+                    senderId: senderId,
+                    receiverId: receiverId
                 },
                 {
-                    senderId : receiverId,
-                    receiverId : senderId
+                    senderId: receiverId,
+                    receiverId: senderId
                 }
             ]
         }).toArray();
         return messages;
     }
+    async markAsRead(messageId) {
+        const db = getDatabase();
+        const collection = db.collection("messages");
+        const result = await collection.updateOne(
+            {
+                _id: new ObjectId(messageId)
+            },
+            {
+                $set: {
+                    isRead: true
+                }
+            }
+        );
+
+        return result;
+
+    }
+    async deleteMessage(messageId) {
+        const db = getDatabase();
+        const collection = db.collection("messages");
+        const result = await collection.deleteOne({
+            _id: new ObjectId(messageId)
+        })
+        return result;
+    }
+        
 }
 module.exports = new MessageService();

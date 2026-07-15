@@ -54,6 +54,44 @@ class MessageController {
             });
         }
     }
+
+    async markAsRead(request, reply) {
+        try {
+            const { id } = request.params;
+
+            const result = await messageService.markAsRead(id);
+            if (result.matchedCount === 0) {
+                return reply.code(404).send({
+                    message : "Mensaje no encontrado."
+                });
+            }
+            return reply.code(200).send(result);
+        }
+        catch (error) {
+            console.error(error);
+            return reply.code(500).send({
+                message: "Error al marcar el mensaje como leído."
+            })
+        }
+    }
+    async deleteMessage(request ,reply) {
+        try {
+            const { id } = request.params;
+            const result = await messageService.deleteMessage(id);
+            if (result.deletedCount === 0) {
+                return reply.code(404).send({
+                    message: "Mensaje no encontrado."
+                })
+            }
+            return reply.code(200).send(result);
+        }
+        catch (error) {
+            console.error(error);
+            return reply.code(500).send({
+                message: "Error al eliminar el mensaje."
+            })
+        }
+    }
 }
 
 module.exports = new MessageController();

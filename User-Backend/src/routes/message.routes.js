@@ -14,6 +14,14 @@ async function messageRoutes(fastify, options) {
         "/messages/conversation/:senderId/:receiverId",
         messageController.getConversation
     );
+    fastify.put(
+        "/messages/:id/read",
+        messageController.markAsRead
+    )
+    fastify.delete(
+        "/messages/:id",
+        messageController.deleteMessage
+    );
 }
 
 module.exports = messageRoutes;
