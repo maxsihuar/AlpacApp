@@ -10,10 +10,9 @@ export function cargarNavbar() {
     const body = document.querySelector("body");
     if (body) {
         body.insertAdjacentHTML("afterbegin", Navbar)
-    }
-    
+    } 
 }
-export function cargarLoginForm(onNavigateToRegister) {
+export function cargarLoginForm(onNavigateToRegister, onNavigateToMain) {
     const body = document.querySelector("body");
     if (body) {
         body.insertAdjacentHTML("afterbegin",LoginForm);
@@ -22,7 +21,15 @@ export function cargarLoginForm(onNavigateToRegister) {
     const formulario = document.getElementById('login-form');
 
     if (formulario) {
-        formulario.addEventListener('submit', RequestEntrar);
+        formulario.addEventListener('submit', async (e) => {
+            const estado = await RequestEntrar(e);
+            if (estado) {
+                if (typeof onNavigateToMain === "function") {
+                    alert("Chevere");
+                    onNavigateToMain();
+                }
+            }
+        });
         
     } else {
         console.error("No se pudo encontrar el formulario 'login-form' en el DOM.");
@@ -39,7 +46,7 @@ export function cargarLoginForm(onNavigateToRegister) {
         console.error("No se pudo encontrar el botón 'btn-register' en el DOM o la función onNavigateToRegister no es válida.");
     }
 }
-export function cargarRegisterForm() {
+export function cargarRegisterForm(onNavigateToLogin) {
     const body = document.querySelector("body");
     if (body) {
         body.insertAdjacentHTML("afterbegin", RegisterFomr);
@@ -47,12 +54,17 @@ export function cargarRegisterForm() {
 
     const formulario = document.getElementById('register-form');
     if (formulario) {
-        formulario.addEventListener('submit', RequestRegistrar);
+        formulario.addEventListener('submit', async (e) => {
+            const estado = await RequestRegistrar(e);
+            if (estado) {
+                if (typeof onNavigateToLogin === "function") {
+                    onNavigateToLogin();
+                }
+            }
+        } );
     } else {
         console.error("No se pudo encontrar el formulario 'register-form' en el DOM.");
     }
-
-
 }
 
 export function cargarChatPage() {
@@ -84,6 +96,13 @@ export function cargarChatPage() {
         main.innerHTML = MainChat;
     } else {
         console.warn("AlpacApp Warning: No se encontró la etiqueta <main> en el DOM actual.");
+    }
+}
+
+export function cargarMainPage() {
+    const body = document.querySelector("body");
+    if (body) {
+        body.insertAdjacentHTML("afterbegin", Navbar)
     }
 }
 

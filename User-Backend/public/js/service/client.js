@@ -44,15 +44,16 @@ export async function RequestEntrar(e) {
 
         if (isValidUser) {
             alert('¡Validación exitosa!');
+            return true;
             // Aquí puedes redirigir al usuario, por ejemplo:
             // window.location.href = '/dashboard';
         }
-
+        
     } catch (error) {
         btn.disabled = false;
-
         console.error('Error en la petición de ingreso:', error);
         alert(error.message);
+        return false
     }
 }
 
@@ -93,6 +94,7 @@ export async function RequestRegistrar(e) {
 
         if (response.status == 201) {
             alert('¡Usuario registrado exitosamente!');
+            return true;
         }
 
     } catch (error) {
@@ -100,5 +102,6 @@ export async function RequestRegistrar(e) {
 
         console.error('Error en la petición de ingreso:', error);
         alert(error.message);
+        return false;
     }
 }

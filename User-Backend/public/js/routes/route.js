@@ -1,4 +1,5 @@
 import { cargarLoginForm, cargarRegisterForm } from "../components/render.js";
+import { cargarMainPage } from "../components/render.js"
 function limpiarBodyConservandoScripts() {
     const body = document.querySelector("body");
     if (!body) return;
@@ -19,10 +20,13 @@ function limpiarBodyConservandoScripts() {
 
 const rutas = {
     "/login": () => {
-        cargarLoginForm(routeToRegister);
+        cargarLoginForm(routeToRegister, routeToMain);
     },
     "/register": () => {
-        cargarRegisterForm();
+        cargarRegisterForm(routeToLogin);
+    },
+    "/main": () => {
+        cargarMainPage();
     }
 };
 
@@ -49,6 +53,10 @@ function routeToRegister() {
 function routeToLogin() {
     window.location.hash = "/login"; }
 
+function routeToMain() {
+    window.location.hash = "/main";
+}
+
 function initializeVars() {
     if (localStorage.getItem("Session") === null) {
         localStorage.setItem("Session", "false");
@@ -68,6 +76,7 @@ function initializeVars() {
 
 window.addEventListener("hashchange", () => {
     console.log("El hash de la URL cambió, re-evaluando vista...");
+    console.log("Hash actual:", window.location.hash);
     router();
 });
 
