@@ -27,10 +27,10 @@ export const Navbar = `
 
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav me-auto my-2 my-lg-0">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                        <a class="nav-link" href="#">Features</a>
-                        <a class="nav-link" href="#">Pricing</a>
-                        <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                        <a class="me-2 nav-link active" aria-current="page" href="#/main"><i class="me-1 bi bi-house"></i>Hogar</a>
+                        <a class="me-2 nav-link" href="#/chats"><i class="me-1 bi bi-chat"></i>Chats</a>
+                        <a class="me-2 nav-link" href="#/grafo"><i class="me-2 bi bi-bezier2"></i>Grafo</a>
+                        <a class="me-2 nav-link disabled" aria-disabled="true">Disfrutalo</a>
                     </div>
 
                     <form class="d-flex mt-2 mt-lg-0" role="search">

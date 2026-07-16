@@ -70,6 +70,16 @@
             return null;
         }
 
+        public List<Node> GetFriends(int id)
+        {
+            List<Node> list = new List<Node>();
+
+            foreach(Edge e in adjacencyList[id])
+            {
+                list.Add(e.Target);
+            }
+            return list;
+        }
     } 
 
 }

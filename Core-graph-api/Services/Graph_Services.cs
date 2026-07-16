@@ -9,11 +9,13 @@ namespace Core_graph_api.Services
         {
             _graph = graph;
         }
-        public void Add_User(string name, string lastname, string email, string password)
+        public int Add_User(string name, string lastname, string email, string password)
         {
             Node uwu = new Node(name.GetHashCode(), name, lastname, email, password);
             _graph.AddNode(uwu);
             _graph.AddEdge(uwu, uwu); // Agregar una arista desde el nodo hacia sí mismo
+
+            return uwu.Id;
         }
         public Node? Search_User(int starrId)
         {
@@ -31,13 +33,20 @@ namespace Core_graph_api.Services
             return new Edge(sourceNode, targetNode);
         }
 
-        public bool ValidarEdge(string email, string password)
+        public Tuple<bool, int> ValidarEdge(string email, string password)
         {
             Node? u = _graph.GetNodebyUser(email, password);
 
-            if(u != null) { return true;
+            if(u != null) { return new Tuple<bool, int> (true, u.Id);
             }
-            return false;
+            return new Tuple<bool, int>(false, 0);
+        }
+
+        public List<Node> Get_Friends(int id)
+        {
+            List<Node> friends = _graph.GetFriends(id);
+
+            return friends;
         }
 
         public List<Node?> BFS_Graph(int startId)

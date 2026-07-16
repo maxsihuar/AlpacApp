@@ -20,7 +20,7 @@ export async function RequestEntrar(e) {
     alert(`Datos enviados:\nEmail: ${data.Email}\nContraseña: ${data.Password}`);
 
     try {
-        const response = await fetch(`${ CSHARP_API_URL }/api/Graph_Controllers/validate_user`, {
+        const response = await fetch(`${CSHARP_API_URL}/api/Graph_Controllers/validate_user`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -42,18 +42,20 @@ export async function RequestEntrar(e) {
 
         const isValidUser = await response.json();
 
-        if (isValidUser) {
-            alert('¡Validación exitosa!');
+        if (isValidUser.estado) {
+            localStorage.setItem("Session", "true");
+            localStorage.setItem("User", isValidUser.id)
             return true;
             // Aquí puedes redirigir al usuario, por ejemplo:
             // window.location.href = '/dashboard';
         }
-        
+
     } catch (error) {
-        btn.disabled = false;
         console.error('Error en la petición de ingreso:', error);
         alert(error.message);
         return false
+    } finally {
+        btn.disabled = false;
     }
 }
 
@@ -94,12 +96,40 @@ export async function RequestRegistrar(e) {
 
         if (response.status == 201) {
             alert('¡Usuario registrado exitosamente!');
+            const responseData = await response.json();
+            localStorage.setItem("User", responseData.id)
             return true;
         }
 
     } catch (error) {
+        console.error('Error en la petición de ingreso:', error);
+        alert(error.message);
+        return false;
+    } finally {
         btn.disabled = false;
+    }
+}
 
+export async function RequestAmigos(e) {
+    const user = localStorage.getItem("User");
+    try {
+        const response = await fetch(`${CSHARP_API_URL}/api/Graph_Controllers/friends${user}`);
+
+        if (!response.ok) {
+            // Escuchamos el 401 (No autorizado) en lugar del 404
+            if (response.status === 400) {
+                throw new Error('Formato no valido.');
+            }
+            // Si realmente es un 404, ahora sí sabemos que es un problema de ruta/servidor
+            if (response.status === 404) {
+                return [];
+            }
+            throw new Error('Ocurrió un error inesperado en el servidor.');
+        }
+
+        const amigos = await response.json();
+        return amigos
+    } catch (error) {
         console.error('Error en la petición de ingreso:', error);
         alert(error.message);
         return false;

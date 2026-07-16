@@ -25,7 +25,6 @@ export function cargarLoginForm(onNavigateToRegister, onNavigateToMain) {
             const estado = await RequestEntrar(e);
             if (estado) {
                 if (typeof onNavigateToMain === "function") {
-                    alert("Chevere");
                     onNavigateToMain();
                 }
             }

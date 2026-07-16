@@ -1,5 +1,6 @@
 import { cargarLoginForm, cargarRegisterForm } from "../components/render.js";
 import { cargarMainPage } from "../components/render.js"
+import { cargarChatPage } from "../components/render.js"
 function limpiarBodyConservandoScripts() {
     const body = document.querySelector("body");
     if (!body) return;
@@ -27,6 +28,9 @@ const rutas = {
     },
     "/main": () => {
         cargarMainPage();
+    },
+    "/chats": () => {
+        cargarChatPage();
     }
 };
 
@@ -42,7 +46,11 @@ function router() {
     if (rutas[rutaActual]) {
         rutas[rutaActual]();
     } else {
-        routeToLogin();
+        if (localStorage.getItem("Session") === "true") {
+            routeToMain();
+        } else {
+            routeToLogin();
+        }
     }
 }
 
@@ -54,8 +62,10 @@ function routeToLogin() {
     window.location.hash = "/login"; }
 
 function routeToMain() {
-    window.location.hash = "/main";
-}
+    window.location.hash = "/main"; }
+
+function routeToChats() {
+    window.location.hash = "/chats"; }
 
 function initializeVars() {
     if (localStorage.getItem("Session") === null) {
@@ -64,12 +74,23 @@ function initializeVars() {
     }
 
     const Session = localStorage.getItem("Session");
+    const HashActual = window.location.hash;
     if (Session === "false") {
 
-        if (!window.location.hash || window.location.hash === "") {
-            window.location.hash = "/login";
+        if (!HashActual || HashActual === "") {
+            routeToLogin();
+        } else {
+            router();
         }
-        router();
+        
+    }
+
+    if (Session === "true") {
+        if (!HashActual || HashActual === "") {
+            routeToMain();
+        } else {
+            router();
+        }
     }
 }
 
@@ -80,5 +101,4 @@ window.addEventListener("hashchange", () => {
     router();
 });
 
-// Arrancamos
-initializeVars();
+document.addEventListener("DOMContentLoaded", initializeVars);

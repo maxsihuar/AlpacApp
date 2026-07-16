@@ -30,9 +30,11 @@ namespace Core_graph_api.Controllers
                 return BadRequest(ModelState);
             }
             
-            _graph_services.Add_User(newUser.Name, newUser.LastName, newUser.Email, newUser.Password);
+            int id = _graph_services.Add_User(newUser.Name, newUser.LastName, newUser.Email, newUser.Password);
 
-            return StatusCode(StatusCodes.Status201Created);
+            var id_json = new { ID = id };
+
+            return StatusCode(StatusCodes.Status201Created, id_json);
         }
 
         //POst: Peticion para validar un usuario existente en el grafo
@@ -46,13 +48,13 @@ namespace Core_graph_api.Controllers
             {
                 return BadRequest(ModelState);
             }
-            bool flag = _graph_services.ValidarEdge(user.Email, user.Password);
-            if (flag == false)
+            Tuple<bool, int> flag = _graph_services.ValidarEdge(user.Email, user.Password);
+            if (flag.Item1 == false)
             {
                 // 401 Unauthorized es el código estándar para credenciales incorrectas
                 return Unauthorized(new { message = "Usuario o contraseña incorrectos." });
             }
-            return Ok(flag);
+            return Ok(new {estado = flag.Item1, id = flag.Item2});
         }
 
         //GET: Peticion para obtener un usuario existente
@@ -67,6 +69,19 @@ namespace Core_graph_api.Controllers
             }
 
             return Ok(user);
+        }
+
+        //GET: Peticion para obtener todos los amigos de un usuario existente
+        [HttpGet("friends/{Id}")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<List<Node>> GetFriends(int id)
+        {
+            List<Node> friends = _graph_services.Get_Friends(id);
+            if (friends == null || friends.Count == 0)
+            {
+                return NotFound();
+            }
+            return Ok(friends);
         }
 
         //POST: Peticion para agregar un nuevo amigos(arista)

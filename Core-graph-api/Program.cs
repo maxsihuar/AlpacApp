@@ -65,6 +65,9 @@ using (var scope = app.Services.CreateScope())
     try
     {
         graphServices.Add_User("Edwin", "Carrasco Poblete", "EdwinPoblete@gmail.com", "Contrasena segura");
+        graphServices.Add_User("Sonia", "Acurio Usca", "SoniaUsca@gmail.com", "Contrasena segura");
+        graphServices.Add_Edge("Edwin".GetHashCode(), "Sonia".GetHashCode());
+        graphServices.Add_Edge("Sonia".GetHashCode(), "Edwin".GetHashCode());
     }
     catch (Exception ex)
     {
