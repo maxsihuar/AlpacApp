@@ -113,7 +113,7 @@ export async function RequestRegistrar(e) {
 export async function RequestAmigos(e) {
     const user = localStorage.getItem("User");
     try {
-        const response = await fetch(`${CSHARP_API_URL}/api/Graph_Controllers/friends${user}`);
+        const response = await fetch(`${CSHARP_API_URL}/api/Graph_Controllers/friends/${user}`);
 
         if (!response.ok) {
             // Escuchamos el 401 (No autorizado) en lugar del 404

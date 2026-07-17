@@ -35,6 +35,7 @@ const rutas = {
 };
 
 function router() {
+    const hashActual = window.location.hash;
     let rutaActual = window.location.hash.replace("#", "");
 
     if (rutaActual === "") {
@@ -42,6 +43,13 @@ function router() {
     }
 
     limpiarBodyConservandoScripts();
+
+    if (hashActual.startsWith("#/chats/")) {
+        const idAmigo = hashActual.replace("#/chats/", "");
+
+        cargarChatPage(idAmigo);
+        return;
+    }
 
     if (rutas[rutaActual]) {
         rutas[rutaActual]();

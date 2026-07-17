@@ -228,30 +228,31 @@ export const OffCanvas = `
         </aside>
 `;
 
-export const OffCanvasChat_activo = `
-                    <a href="#" class="list-group-item list-group-item-action bg-secondary text-white d-flex align-items-center p-3 border-bottom border-secondary active">
-                        <img src="image/AlpacAPP Usuario.svg" width="40" height="40" class="rounded-circle me-3" alt="Avatar">
-                        <div class="w-100 overflow-hidden">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-1 text-truncate">Soporte AlpacApp</h6>
-                                <small class="text-white-50 flex-shrink-0">1:05 PM</small>
-                            </div>
-                            <p class="mb-0 small text-white-50 text-truncate">Â¿Viste el nuevo logo?</p>
-                        </div>
-                    </a>
-`;
+export const MessageSender = ({ time, message }) => {
+    return `<div class="d-flex align-self-end max-w-75">
+                <div class="bg-primary text-white p-3 rounded-3 shadow-sm rounded-end-0">
+                    <p class="mb-1">¡Qué tal! Justo acabo de solucionar el problema del enrutador por Hash. ¡Ya funciona!</p>
+                    <small class="text-white-50 d-block text-end" style="font-size: 0.75rem;">14:36</small>
+                </div>
+            </div>`;
+};
 
-export const OffCanvasChat_inactivo = `
-                    <a href="#" class="list-group-item list-group-item-action bg-dark text-white d-flex align-items-center p-3 border-bottom border-secondary">
-                        <img src="image/AlpacAPP Usuario.svg" width="40" height="40" class="rounded-circle me-3" alt="Avatar">
-                        <div class="w-100 overflow-hidden">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-1 text-truncate">Juan PÃ©rez</h6>
-                                <small class="text-muted flex-shrink-0">Ayer</small>
-                            </div>
-                            <p class="mb-0 small text-muted text-truncate">Â¡Dale, nos vemos luego!</p>
-                        </div>
-                    </a>`;
+export const OffCanvasChat = ({ id, name, time, message, active = false }) => {
+    const activeClass = active ? 'secondary' : 'dark';
+
+    return `
+    <a href="#/chats/${id}" 
+       class="list-group-item list-group-item-action bg-${activeClass} text-white d-flex align-items-center p-3 border-bottom border-secondary">
+        <img src="image/AlpacAPP Usuario.svg" width="40" height="40" class="rounded-circle me-3" alt="Avatar de ${name}">
+        <div class="w-100 overflow-hidden">
+            <div class="d-flex w-100 justify-content-between">
+                <h6 class="mb-1 text-truncate">${name}</h6>
+                <small class="text-white-50 flex-shrink-0">${time}</small>
+            </div>
+            <p class="mb-0 small text-truncate text-white-50">${message}</p>
+        </div>
+    </a>`;
+};
 
 export const ContainerCards = `
     <div class="container-fluid px-3 px-md-5 py-3">

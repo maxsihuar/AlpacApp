@@ -8,7 +8,7 @@ class MessageService {
         const db = getDatabase();
         const collection = db.collection("messages");
         const result = await collection.insertOne(message);
-        message.id = result.insertedId;
+        message._id = result.insertedId;
 
         return message;
     }

@@ -1,17 +1,49 @@
 import { Navbar } from "./components.js"; 
-import { OffCanvas, MainChat, ContainerChat, OffCanvasChat_activo, OffCanvasChat_inactivo } from "./components.js";
+import { OffCanvas, MainChat, ContainerChat, OffCanvasChat } from "./components.js";
 import { LoginForm } from "./components.js";
 import { RegisterFomr} from "./components.js";
 import { ContainerCards, CardPeople } from "./components.js";
 
 import { RequestEntrar } from "../service/client.js";
 import { RequestRegistrar } from "../service/client.js";
-export function cargarNavbar() {
+import { RequestAmigos} from "../service/client.js"
+function cargarNavbar() {
     const body = document.querySelector("body");
     if (body) {
         body.insertAdjacentHTML("afterbegin", Navbar)
     } 
 }
+
+async function cargarChats(idActivo = null) {
+    const listaChats = document.getElementById("list-chats");
+    if (listaChats) {
+        const amigos = await RequestAmigos();
+        listaChats.innerHTML = "";
+
+        amigos.forEach(amigo => {
+            const nuevoChat = {
+                id: amigo.id,
+                name: amigo.name,
+                time: '14:32',
+                message: '¡Dale, nos vemos luego!',
+                active: amigo.id == idActivo
+            };
+            listaChats.innerHTML += OffCanvasChat(nuevoChat);
+        })
+    } else {
+        console.warn("AlpacApp Warning: No se encontró la etiqueta <div id='list-chats'> en el DOM actual.");
+    }
+}
+
+async function cargarMensajes(idAmigo = null) {
+    const main = document.getElementById("main");
+    if (main) {
+        main.innerHTML = MainChat;
+    } else {
+        console.warn("AlpacApp Warning: No se encontró la etiqueta <main> en el DOM actual.");
+    }
+}
+
 export function cargarLoginForm(onNavigateToRegister, onNavigateToMain) {
     const body = document.querySelector("body");
     if (body) {
@@ -66,11 +98,15 @@ export function cargarRegisterForm(onNavigateToLogin) {
     }
 }
 
-export function cargarChatPage() {
+export function cargarMainPage() {
     const body = document.querySelector("body");
     if (body) {
         body.insertAdjacentHTML("afterbegin", Navbar)
     }
+}
+
+export function cargarChatPage(idAmigo = null) {
+    cargarNavbar();
 
     const navbar = document.querySelector('header');
     if (navbar) {
@@ -81,29 +117,11 @@ export function cargarChatPage() {
     if (aside) {
         aside.innerHTML = OffCanvas;
     }
-
-    const listaChats = document.getElementById("list-chats");
-    if (listaChats) {
-        listaChats.innerHTML = OffCanvasChat_activo + OffCanvasChat_inactivo;
-    }
-    else {
-        console.warn("AlpacApp Warning: No se encontró la etiqueta <div id='list-chats'> en el DOM actual.");
-    }
-
-    const main = document.getElementById("main");
-    if (main) {
-        main.innerHTML = MainChat;
-    } else {
-        console.warn("AlpacApp Warning: No se encontró la etiqueta <main> en el DOM actual.");
-    }
+    
+    cargarChats(idAmigo);
+    cargarMensajes(idAmigo)
 }
 
-export function cargarMainPage() {
-    const body = document.querySelector("body");
-    if (body) {
-        body.insertAdjacentHTML("afterbegin", Navbar)
-    }
-}
 
 export function cargarContainerSearch() {
     const navbar = document.querySelector('header');
