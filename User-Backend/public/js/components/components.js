@@ -1,6 +1,6 @@
 export const Navbar = `
 <header>
-        <nav class="navbar sticky-top navbar-expand-lg bg-dark p-3" data-bs-theme="dark">
+        <nav class="navbar fixed-top navbar-expand-lg bg-dark p-3" data-bs-theme="dark">
             <div class="container-fluid">
                 <a class="navbar-brand text-center" href="#">
                     <img src="image/AlpacAPP_Logo-removebg-preview.png" alt="Logo" width="60" height="60" class="d-inline-block align-text-center">
@@ -164,40 +164,39 @@ export const RegisterFomr = `
     </main>`;
 
 export const ContainerChat = `
-    <div class="container-fluid p-0 overflow-hidden" style="height: calc(100vh - 90px);">
-        <div class="row g-0 h-100 w-100 m-0">
+    <!-- Forzamos al contenedor principal a medir el alto exacto disponible debajo del navbar -->
+    <div class="container-fluid p-0 overflow-hidden bg-light" style="height: calc(100vh - 100px); margin-top: 100px; display: flex; width: 100%;">
+        
+        <!-- En móviles este div medirá 0 de ancho, en PC tomará el 25% (col-lg-3 equivalente) -->
+        <div id="aside" class="col-0 col-lg-3 p-0 h-100 flex-shrink-0"></div>
 
+        <!-- El contenedor del chat toma el 100% en móviles y el 75% en PC de forma fluida -->
+        <div id="main" class="col-12 col-lg-9 p-0 h-100 flex-grow-1" style="position: relative; height: 100%;"></div>
 
-            <div id="aside" class="col-lg-3 p-0"></div>
-
-            <div id="main" class="col-12 col-lg-9 p-0 h-100"></div>
-
-        </div>
     </div>`;
 
-export const MainChat = `
-<div class="w-100 bg-light h-100">
-    <div class="d-flex flex-column h-100">
-        <!-- Cabecera del chat -->
-        <div class="p-3 bg-white border-bottom shadow-sm">
-            <h5 class="mb-0">Soporte AlpacApp</h5>
-        </div>
+export const MainChat = (titulo) => {
+    return `
+<div class="w-100 bg-light h-100" style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; display: flex; flex-direction: column;">
+    <!-- Cabecera fija arriba -->
+    <div class="p-3 bg-white border-bottom shadow-sm" style="flex-shrink: 0; width: 100%;">
+        <h5 class="mb-0">${titulo}</h5>
+    </div>
 
-        <!-- Espacio para los mensajes -->
-        <div id="container-chats" class="d-flex flex-column gap-2 flex-grow-1 p-3 overflow-auto">
-            <!-- Corregido el texto con entidades HTML para evitar los rombos -->
-            <p class="text-muted text-center my-4">Aqu&iacute; se cargar&aacute;n tus mensajes...</p>
-        </div>
+    <!-- Espacio intermedio para mensajes con scroll forzado -->
+    <div id="container-chats" class="d-flex flex-column gap-2 p-3 overflow-auto" style="flex-grow: 1; min-height: 0; overflow-y: auto;">
+        <!-- Aquí entran los mensajes cargados por la API -->
+    </div>
 
-        <!-- Footer con el input -->
-        <div class="p-3 bg-white border-top">
-            <form class="d-flex">
-                <input type="text" class="form-control me-2" placeholder="Escribe un mensaje...">
-                <button class="btn-chat btn btn-success" type="submit">Enviar</button>
-            </form>
-        </div>
+    <!-- Footer fijo abajo (No se puede desplazar más abajo del borde inferior) -->
+    <div class="p-3 bg-white border-top" style="flex-shrink: 0; width: 100%;">
+        <form class="d-flex">
+            <input type="text" class="form-control me-2" placeholder="Escribe un mensaje...">
+            <button class="btn-chat btn btn-success" type="submit">Enviar</button>
+        </form>
     </div>
 </div>`;
+}
 
 export const OffCanvas = `
         <button class="btn btn-success d-lg-none position-fixed start-0 ms-3 z-3 shadow-lg" type="button" data-bs-toggle="offcanvas" data-bs-target="#asideChats" aria-controls="asideChats" style="bottom: 75px !important;">
@@ -205,7 +204,8 @@ export const OffCanvas = `
         </button>
 
         <!-- El menÃº lateral: En mÃ³viles (menor a lg) usa el sistema offcanvas flotante. En PC (lg) se vuelve un bloque normal -->
-        <aside class="offcanvas-lg offcanvas-start bg-dark border-end text-white p-0 h-100 w-100" tabindex="-1" id="asideChats" aria-labelledby="asideChatsLabel" style="height: 100%;">
+        
+            <aside class="offcanvas-lg offcanvas-start bg-dark border-end text-white p-0" tabindex="-1" id="asideChats" aria-labelledby="asideChatsLabel" style="height: calc(100vh - 56px);">
 
             <div class="offcanvas-header bg-dark border-bottom d-lg-none">
                 <h5 class="offcanvas-title" id="asideChatsLabel">Mis Conversaciones</h5>
@@ -229,8 +229,8 @@ export const OffCanvas = `
 `;
 
 export const MessageReceiver = ({ time, message }) => {
-    return `<div class="d-flex align-self-start max-w-75">
-                <div class="bg-primary text-white p-3 rounded-3 shadow-sm rounded-start-0">
+    return `<div  class="d-flex align-self-start max-w-75">
+                <div id ="receiver" class="bg-primary text-white p-3 rounded-3 shadow-sm rounded-start-0">
                     <p class="mb-1">${message}</p>
                     <small class="text-white-50 d-block text-end" style="font-size: 0.75rem;">${time}</small>
                 </div>

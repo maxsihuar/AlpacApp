@@ -5,6 +5,7 @@ import { LoginForm } from "./components.js";
 import { RegisterFomr } from "./components.js";
 import { ContainerCards, CardPeople, MainPage, FriendsContainer,MediaContainer } from "./components.js";
 
+import { RequestUser } from "../service/client.js";
 import { RequestEntrar } from "../service/client.js";
 import { RequestRegistrar } from "../service/client.js";
 import { RequestAmigos } from "../service/client.js";
@@ -61,11 +62,17 @@ async function cargarChats(idActivo = null) {
 
 async function cargarMensajes(idAmigo = null) {
     const main = document.getElementById("main");
-    if (main) {
-        main.innerHTML = MainChat;
-    } else {
-        console.warn("AlpacApp Warning: No se encontró la etiqueta <main> en el DOM actual.");
+    try {
+        const amigo = await RequestUser(idAmigo);
+        if (main) {
+            main.innerHTML = MainChat(amigo.name+ " " + amigo.lastName);
+        } else {
+            console.warn("AlpacApp Warning: No se encontró la etiqueta <main> en el DOM actual.");
+        }
+    } catch {
+        console.log("Error al cargar informacion de un amigo")
     }
+    
 
     const container = document.getElementById("container-chats");
     const user = localStorage.getItem("User");
@@ -175,22 +182,6 @@ export function cargarChatPage(idAmigo = null) {
     cargarChats(idAmigo);
     cargarMensajes(idAmigo);
 }
-
-
-    const listaChats = document.getElementById("list-chats");
-    if (listaChats) {
-        listaChats.innerHTML = OffCanvasChat_activo + OffCanvasChat_inactivo;
-    }
-    else {
-        console.warn("AlpacApp Warning: No se encontró la etiqueta <div id='list-chats'> en el DOM actual.");
-    }
-
-    const main = document.getElementById("main");
-    if (main) {
-        main.innerHTML = MainChat;
-    } else {
-        console.warn("AlpacApp Warning: No se encontró la etiqueta <main> en el DOM actual.");
-    }
 
 export function cargarMainPage() {
 

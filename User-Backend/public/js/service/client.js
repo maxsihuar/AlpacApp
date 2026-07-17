@@ -9,6 +9,21 @@ const NODE_API_URL =
         ? 'http://localhost:3000'  // Puerto habitual de Node.js (Express)
         : 'https://tu-api-node.onrender.com';
 
+export async function RequestUser(id) {
+    try {
+        const response = await fetch(`${CSHARP_API_URL}/api/Graph_Controllers/user/${id}`);
+
+        if (!response.ok) {
+            throw new Error('Ocurrió un error inesperado en el servidor.');
+        }
+
+        const user = await response.json();
+        return user;
+    } catch (error) {
+        console.log("Error en la peticion : ", error);
+    }
+}
+
 export async function RequestEntrar(e) {
     e.preventDefault();
 
