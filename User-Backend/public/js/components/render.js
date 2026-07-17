@@ -1,5 +1,6 @@
 import { Navbar } from "./components.js"; 
 import { OffCanvas, MainChat, ContainerChat, OffCanvasChat } from "./components.js";
+import { MessageSender, MessageReceiver } from "./components.js";
 import { LoginForm } from "./components.js";
 import { RegisterFomr} from "./components.js";
 import { ContainerCards, CardPeople } from "./components.js";
@@ -8,6 +9,7 @@ import { RequestEntrar } from "../service/client.js";
 import { RequestRegistrar } from "../service/client.js";
 import { RequestAmigos } from "../service/client.js";
 import { RequesteLastMessage } from "../service/client.js"
+import { RequesteConversation } from "../service/client.js";
 
 function cargarNavbar() {
     const body = document.querySelector("body");
@@ -29,12 +31,12 @@ async function cargarChats(idActivo = null) {
     const promesasChats = amigos.map(async (amigo) => {
         let time = 'Nuevo';
         let message = '¡Di hola por primera vez!';
-
+            
         try {
             const last = await RequesteLastMessage(user, amigo.id);
 
             if (last && last.content) {
-                time = last.sendAt || 'Ahora';
+                time = last.sentAt || 'Ahora';
                 message = last.content;
             }
         } catch (error) {
@@ -63,6 +65,35 @@ async function cargarMensajes(idAmigo = null) {
         main.innerHTML = MainChat;
     } else {
         console.warn("AlpacApp Warning: No se encontró la etiqueta <main> en el DOM actual.");
+    }
+
+    const container = document.getElementById("container-chats");
+    const user = localStorage.getItem("User");
+
+    try {
+        const conversation = await RequesteConversation(user, idAmigo);
+
+        conversation.forEach((mensaje) => {
+
+            // CORREGIDO: senderId (con d minúscula como viene de tu API)
+            // Ojo: Si 'user' en localStorage es un String y senderId es un Number, usa == en vez de ===
+            if (mensaje.senderId == user) {
+                // CORREGIDO: 'beforeend' para mantener el orden cronológico abajo
+                // CORREGIDO: mensaje.sentAt (como viene en tu API)
+                container.insertAdjacentHTML("beforeend", MessageSender({
+                    time: mensaje.sentAt,
+                    message: mensaje.content
+                }));
+
+            } else {
+                container.insertAdjacentHTML("beforeend", MessageReceiver({
+                    time: mensaje.sentAt,
+                    message: mensaje.content
+                }));
+            }
+        });
+    } catch (error) {
+        console.warn(`No se pudo obtener la conversacion para el ID ${idAmigo}:`, error);
     }
 }
 

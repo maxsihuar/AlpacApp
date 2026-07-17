@@ -36,6 +36,7 @@
                     // Lo guardamos en la lista del nodo origen
                     adjacencyList[sourceNode.Id].Add(newEdge);
                 }
+                
             }
         }
 
@@ -57,6 +58,7 @@
             if (uwu == null) return null;
 
             return uwu.Source;
+
         }
         public Node? GetNodebyUser(string email, string pass)
         {

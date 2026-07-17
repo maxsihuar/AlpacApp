@@ -184,7 +184,7 @@ export const MainChat = `
         </div>
 
         <!-- Espacio para los mensajes -->
-        <div class="flex-grow-1 p-3 overflow-auto">
+        <div id="container-chats" class="d-flex flex-column gap-2 flex-grow-1 p-3 overflow-auto">
             <!-- Corregido el texto con entidades HTML para evitar los rombos -->
             <p class="text-muted text-center my-4">Aqu&iacute; se cargar&aacute;n tus mensajes...</p>
         </div>
@@ -228,19 +228,19 @@ export const OffCanvas = `
         </aside>
 `;
 
-export const MessageSender = ({ time, message }) => {
-    return `<div class="d-flex align-self-end max-w-75">
-                <div class="bg-primary text-white p-3 rounded-3 shadow-sm rounded-end-0">
+export const MessageReceiver = ({ time, message }) => {
+    return `<div class="d-flex align-self-start max-w-75">
+                <div class="bg-primary text-white p-3 rounded-3 shadow-sm rounded-start-0">
                     <p class="mb-1">${message}</p>
                     <small class="text-white-50 d-block text-end" style="font-size: 0.75rem;">${time}</small>
                 </div>
             </div>`;
 };
 
-export const MessageReceiver = ({ time, message }) => {
+export const MessageSender = ({ time, message }) => {
     return `
-    <div class="d-flex align-self-start max-w-75">
-        <div class="bg-secondary text-white p-3 rounded-3 shadow-sm rounded-start-0">
+    <div class="d-flex align-self-end max-w-75">
+        <div class="bg-secondary text-white p-3 rounded-3 shadow-sm rounded-end-0">
             <p class="mb-1">${message}</p>
             <small class="text-white-50 d-block text-end" style="font-size: 0.75rem;">${time}</small>
         </div>

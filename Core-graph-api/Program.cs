@@ -1,5 +1,6 @@
 using Core_graph_api.Models;
 using Core_graph_api.Services;
+using Core_graph_api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<Graph>();
 builder.Services.AddSingleton<Graph_Services>();
+builder.Services.AddSingleton<LoadData>();
+builder.Services.AddSingleton<SaveData>();
 
 var app = builder.Build();
 
@@ -62,12 +65,11 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var graphServices = scope.ServiceProvider.GetRequiredService<Graph_Services>();
+    var graphLoader = scope.ServiceProvider.GetRequiredService<LoadData>();
     try
     {
-        graphServices.Add_User("Edwin", "Carrasco Poblete", "EdwinPoblete@gmail.com", "Contrasena segura");
-        graphServices.Add_User("Sonia", "Acurio Usca", "SoniaUsca@gmail.com", "Contrasena segura");
-        graphServices.Add_Edge("Edwin".GetHashCode(), "Sonia".GetHashCode());
-        graphServices.Add_Edge("Sonia".GetHashCode(), "Edwin".GetHashCode());
+        graphLoader.LoadNode(graphServices.Load_Node);
+        graphLoader.LoadEdge(graphServices.Load_Edge);
     }
     catch (Exception ex)
     {

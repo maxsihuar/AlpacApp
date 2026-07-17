@@ -150,9 +150,23 @@ export async function RequesteLastMessage(idSender, idReceiver) {
         }
 
         const lastMessage = response.json();
-        alert(lastMessage);
         return lastMessage;
     } catch(error) {
+        console.log("Error en la peticion : ", error);
+    }
+}
+
+export async function RequesteConversation(idSender, idReceiver) {
+    try {
+        const response = await fetch(`${NODE_API_URL}/messages/conversation/${idSender}/${idReceiver}`);
+
+        if (!response.ok) {
+            throw new Error('Ocurrió un error inesperado en el servidor.');
+        }
+
+        const lastMessage = response.json();
+        return lastMessage;
+    } catch (error) {
         console.log("Error en la peticion : ", error);
     }
 }
