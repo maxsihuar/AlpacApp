@@ -273,26 +273,101 @@ export const ContainerCards = `
     </div>`;
 
 export const CardPeople = `
-            <div class="col-sm-4 mb-3 mb-sm-0 pb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>`;
+<div class="col-md-4 col-lg-3 mb-4">
+
+    <div class="card h-100">
+
+        <img
+            src="/image/AlpacAPP-Media/alvaro.jpeg"
+            class="card-img-top"
+            alt="Foto del usuario"
+        >
+
+        <div class="card-body">
+
+            <h5 class="card-title title-color">
+                Marco
+            </h5>
+
+            <p class="card-text title-color">
+                Ingeniería de Sistemas
+            </p>
+
+            <div class="d-flex justify-content-between">
+
+                <button class="btn btn-primary btn-sm button-color">
+                    Ver perfil
+                </button>
+
+                <button class="btn btn-outline-primary btn-sm button-color">
+                    Agregar
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+`;
 export const FriendsContainer = `
+    <h3 class="fw-bold mb-3 title-color">
+        Sugerencias de Amistad
+    </h3>
 
+    <div id="friends-cards" class="row">
 
-
+    </div>
+`;
+export const Carousel = `
+<div id="carouselExampleIndicators"
+class="carousel slide"
+data-bs-ride="carousel"
+data-bs-interval="3000">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="/image/AlpacAPP-Media/logo unsaac.png" class="d-block w-100 logo-banner" alt="Banner1">
+    </div>
+    <div class="carousel-item">
+      <img src="/image/AlpacAPP-Media/logo info.jpg" class="d-block w-100 logo-banner" alt="Banner2">
+    </div>
+    <div class="carousel-item">
+      <img src="/image/AlpacAPP-Media/bob.jpg" class="d-block w-100" alt="Banner3">
+    </div>
+    <div class ="carousel-item">
+        <img src = "/image/AlpacAPP-Media/miary zo.jpg" class = "d-block w-100" alt="Banner4">
+    </div>
+  </div>
+</div>
 `
+export const MediaContainer = `
+    <h3 class="fw-bold mb-3 title-color">
+        Lo mejor de Internet
+    </h3>
+
+    ${Carousel}
+`;
 export const MainPage = `
-    <main class = "container py-4">
-        <section id ="friends-section"
-        </section>
-      
-        <section id ="posts-section"
-        <section>
-    </main>
+    <main class="main-page">
+
+        <div class="container py-4">
+
+            <section id="friends-section">
+
+            </section>
+
+            <section id="media-section">
+
+            </section>
+
+        </div>
+
+</main >
 `;

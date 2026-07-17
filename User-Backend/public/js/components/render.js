@@ -1,8 +1,8 @@
 import { Navbar } from "./components.js"; 
 import { OffCanvas, MainChat, ContainerChat, OffCanvasChat } from "./components.js";
 import { LoginForm } from "./components.js";
-import { RegisterFomr} from "./components.js";
-import { ContainerCards, CardPeople } from "./components.js";
+import { RegisterFomr } from "./components.js";
+import { ContainerCards, CardPeople, MainPage, FriendsContainer,MediaContainer } from "./components.js";
 
 import { RequestEntrar } from "../service/client.js";
 import { RequestRegistrar } from "../service/client.js";
@@ -139,11 +139,61 @@ export function cargarChatPage(idAmigo = null) {
     if (aside) {
         aside.innerHTML = OffCanvas;
     }
+
     
     cargarChats(idAmigo);
     cargarMensajes(idAmigo);
 }
 
+
+    const listaChats = document.getElementById("list-chats");
+    if (listaChats) {
+        listaChats.innerHTML = OffCanvasChat_activo + OffCanvasChat_inactivo;
+    }
+    else {
+        console.warn("AlpacApp Warning: No se encontró la etiqueta <div id='list-chats'> en el DOM actual.");
+    }
+
+    const main = document.getElementById("main");
+    if (main) {
+        main.innerHTML = MainChat;
+    } else {
+        console.warn("AlpacApp Warning: No se encontró la etiqueta <main> en el DOM actual.");
+    }
+
+export function cargarMainPage() {
+
+    const body = document.querySelector("body");
+
+    if (body) {
+        body.insertAdjacentHTML("afterbegin", Navbar);
+    }
+
+    const navbar = document.querySelector("header");
+
+    if (navbar) {
+        navbar.insertAdjacentHTML("afterend", MainPage);
+    }
+
+    const friends = document.getElementById("friends-section");
+
+    if (friends) {
+        friends.innerHTML = FriendsContainer;
+    } else {
+        console.warn("No se encontró friends-section");
+    }
+    cargarCardPeople();
+    const media = document.getElementById("media-section");
+
+    if (media) {
+        media.innerHTML = MediaContainer;
+    } else {
+        console.warn("No se encontró media-section");
+    }
+
+    
+
+}
 export function cargarContainerSearch() {
     const navbar = document.querySelector('header');
     if (navbar) {
@@ -152,13 +202,19 @@ export function cargarContainerSearch() {
 }
 
 export function cargarCardPeople() {
-    const container = document.getElementById("container-cards");
+
+    const container = document.getElementById("friends-cards");
+
     if (container) {
+
         for (let i = 0; i < 10; i++) {
-            container.insertAdjacentHTML("afterbegin", CardPeople);
+
+            container.insertAdjacentHTML("beforeend", CardPeople);
+
         }
-        
+
     }
+
 }
 
 // Evento unificado: Corre todo en orden secuencial estricto
