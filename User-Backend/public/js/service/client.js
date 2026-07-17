@@ -149,7 +149,8 @@ export async function RequesteLastMessage(idSender, idReceiver) {
             throw new Error('Ocurrió un error inesperado en el servidor.');
         }
 
-        const lastMessage = response.json
+        const lastMessage = response.json();
+        alert(lastMessage);
         return lastMessage;
     } catch(error) {
         console.log("Error en la peticion : ", error);
