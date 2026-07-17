@@ -8,7 +8,7 @@ class MessageService {
         const db = getDatabase();
         const collection = db.collection("messages");
         const result = await collection.insertOne(message);
-        message.id = result.insertedId;
+        message._id = result.insertedId;
 
         return message;
     }
@@ -17,6 +17,29 @@ class MessageService {
         const collection = db.collection("messages");
         const messages = await collection.find().toArray();
         return messages;
+    }
+    async getLastMessage(senderId, receiverId) {
+
+        const db = getDatabase();
+        const collection = db.collection("messages");
+
+        return await collection.findOne(
+            {
+                $or: [
+                    {
+                        senderId: senderId,
+                        receiverId: receiverId
+                    },
+                    {
+                        senderId: receiverId,
+                        receiverId: senderId
+                    }
+                ]
+            },
+            {
+                sort: { sentAt: -1 }
+            }
+        );
     }
     async getConversation(senderId, receiverId) {
         const db = getDatabase();

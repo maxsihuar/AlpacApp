@@ -255,7 +255,8 @@ export const OffCanvasChat_inactivo = `
 
 export const ContainerCards = `
     <div class="container-fluid px-3 px-md-5 py-3">
-        <h3 id="Search_text" class="text-start">Personas encontradas</h3>
+        <h3 id="Search_text" class="text-start">Personas encontradas
+        </h3>
         <div id="container-cards" class="row mt-4">
         </div>
     </div>`;
@@ -270,3 +271,17 @@ export const CardPeople = `
                     </div>
                 </div>
             </div>`;
+export const FriendsContainer = `
+
+
+
+`
+export const MainPage = `
+    <main class = "container py-4">
+        <section id ="friends-section"
+        </section>
+      
+        <section id ="posts-section"
+        <section>
+    </main>
+`;

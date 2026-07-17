@@ -103,6 +103,7 @@ export function cargarMainPage() {
     if (body) {
         body.insertAdjacentHTML("afterbegin", Navbar)
     }
+
 }
 
 export function cargarContainerSearch() {

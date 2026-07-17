@@ -11,6 +11,10 @@ async function messageRoutes(fastify, options) {
         messageController.getAllMessages
     );
     fastify.get(
+        "/messages/ultimo/:senderId/:receiverId",
+        messageController.getLastMessage
+    )
+    fastify.get(
         "/messages/conversation/:senderId/:receiverId",
         messageController.getConversation
     );
