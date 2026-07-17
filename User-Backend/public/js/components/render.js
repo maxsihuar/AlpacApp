@@ -122,6 +122,13 @@ export function cargarChatPage(idAmigo = null) {
     cargarMensajes(idAmigo)
 }
 
+export function cargarMainPage() {
+    const body = document.querySelector("body");
+    if (body) {
+        body.insertAdjacentHTML("afterbegin", Navbar)
+    }
+
+}
 
 export function cargarContainerSearch() {
     const navbar = document.querySelector('header');
