@@ -120,7 +120,7 @@ export function cargarRegisterForm(onNavigateToLogin) {
     }
 }
 
-export function cargarMainPage() {
+export function cargarMain2Page() {
     const body = document.querySelector("body");
     if (body) {
         body.insertAdjacentHTML("afterbegin", Navbar)
