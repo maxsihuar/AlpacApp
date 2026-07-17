@@ -41,18 +41,7 @@ class MessageController {
             });
         }
     }
-    async getLastMessage(request, reply) {
-        try {
-            const messages = await messageService.getLastMessage(Number(request.params.senderId), Number(request.params.receiverId))
-            return reply.code(200).send(messages);
-        }
-        catch (error) {
-            console.error(error);
-            return reply.code(500).send({
-                message: "Error al obtener el último mensaje."
-            });
-        }
-    }
+
     async getConversation(request, reply) {
         try {
             const messages = await messageService.getConversation(Number(request.params.senderId), Number(request.params.receiverId))

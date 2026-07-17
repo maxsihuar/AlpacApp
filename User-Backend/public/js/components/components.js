@@ -231,10 +231,20 @@ export const OffCanvas = `
 export const MessageSender = ({ time, message }) => {
     return `<div class="d-flex align-self-end max-w-75">
                 <div class="bg-primary text-white p-3 rounded-3 shadow-sm rounded-end-0">
-                    <p class="mb-1">¡Qué tal! Justo acabo de solucionar el problema del enrutador por Hash. ¡Ya funciona!</p>
-                    <small class="text-white-50 d-block text-end" style="font-size: 0.75rem;">14:36</small>
+                    <p class="mb-1">${message}</p>
+                    <small class="text-white-50 d-block text-end" style="font-size: 0.75rem;">${time}</small>
                 </div>
             </div>`;
+};
+
+export const MessageReceiver = ({ time, message }) => {
+    return `
+    <div class="d-flex align-self-start max-w-75">
+        <div class="bg-secondary text-white p-3 rounded-3 shadow-sm rounded-start-0">
+            <p class="mb-1">${message}</p>
+            <small class="text-white-50 d-block text-end" style="font-size: 0.75rem;">${time}</small>
+        </div>
+    </div>`;
 };
 
 export const OffCanvasChat = ({ id, name, time, message, active = false }) => {

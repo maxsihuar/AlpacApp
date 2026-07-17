@@ -13,7 +13,7 @@ async function messageRoutes(fastify, options) {
     fastify.get(
         "/messages/ultimo/:senderId/:receiverId",
         messageController.getLastMessage
-    )
+    );
     fastify.get(
         "/messages/conversation/:senderId/:receiverId",
         messageController.getConversation
@@ -21,7 +21,7 @@ async function messageRoutes(fastify, options) {
     fastify.put(
         "/messages/:id/read",
         messageController.markAsRead
-    )
+    );
     fastify.delete(
         "/messages/:id",
         messageController.deleteMessage

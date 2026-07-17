@@ -6,7 +6,9 @@ import { ContainerCards, CardPeople } from "./components.js";
 
 import { RequestEntrar } from "../service/client.js";
 import { RequestRegistrar } from "../service/client.js";
-import { RequestAmigos} from "../service/client.js"
+import { RequestAmigos } from "../service/client.js";
+import { RequesteLastMessage } from "../service/client.js"
+
 function cargarNavbar() {
     const body = document.querySelector("body");
     if (body) {
@@ -16,23 +18,43 @@ function cargarNavbar() {
 
 async function cargarChats(idActivo = null) {
     const listaChats = document.getElementById("list-chats");
-    if (listaChats) {
-        const amigos = await RequestAmigos();
-        listaChats.innerHTML = "";
-
-        amigos.forEach(amigo => {
-            const nuevoChat = {
-                id: amigo.id,
-                name: amigo.name,
-                time: '14:32',
-                message: '¡Dale, nos vemos luego!',
-                active: amigo.id == idActivo
-            };
-            listaChats.innerHTML += OffCanvasChat(nuevoChat);
-        })
-    } else {
+    if (!listaChats) {
         console.warn("AlpacApp Warning: No se encontró la etiqueta <div id='list-chats'> en el DOM actual.");
     }
+
+    const user = localStorage.getItem("User");
+    const amigos = await RequestAmigos();
+    listaChats.innerHTML = "";
+
+    const promesasChats = amigos.map(async (amigo) => {
+        let time = 'Nuevo';
+        let message = '¡Di hola por primera vez!';
+
+        try {
+            const last = await RequesteLastMessage(user, amigo.id);
+
+            if (last && last.content) {
+                time = last.sendAt || 'Ahora';
+                message = last.content;
+            }
+        } catch (error) {
+            console.warn(`No se pudo obtener el último mensaje para el ID ${amigo.id}:`, error);
+        }
+
+        return {
+            id: amigo.id,
+            name: amigo.name,
+            time: time,
+            message: message,
+            active: amigo.id == idActivo
+        };
+    });
+
+    const chatsListos = await Promise.all(promesasChats);
+
+    chatsListos.forEach(nuevoChat => {
+        listaChats.innerHTML += OffCanvasChat(nuevoChat);
+    });
 }
 
 async function cargarMensajes(idAmigo = null) {
@@ -119,15 +141,7 @@ export function cargarChatPage(idAmigo = null) {
     }
     
     cargarChats(idAmigo);
-    cargarMensajes(idAmigo)
-}
-
-export function cargarMainPage() {
-    const body = document.querySelector("body");
-    if (body) {
-        body.insertAdjacentHTML("afterbegin", Navbar)
-    }
-
+    cargarMensajes(idAmigo);
 }
 
 export function cargarContainerSearch() {

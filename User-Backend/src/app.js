@@ -12,6 +12,11 @@ const start = async () => {
 
         await connectDatabase();
 
+        await fastify.register(require("@fastify/cors"), {
+            // Esto permite que tu frontend (independientemente del puerto en localhost) haga peticiones
+            origin: true
+        });
+
         await fastify.register(require("@fastify/static"), {
             root: path.join(__dirname,"..", "public"),
             prefix: "/", // Hace que los archivos se sirvan en la raíz (ej: http://localhost:PORT/)

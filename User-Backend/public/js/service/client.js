@@ -4,6 +4,11 @@ const CSHARP_API_URL =
         ? 'http://localhost:5225'  // Tu API local de C# (HTTP para evitar líos de certificados)
         : 'https://tu-api-csharp.onrender.com'; // URL de producción provista por Render
 
+const NODE_API_URL =
+    window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? 'http://localhost:3000'  // Puerto habitual de Node.js (Express)
+        : 'https://tu-api-node.onrender.com';
+
 export async function RequestEntrar(e) {
     e.preventDefault();
 
@@ -133,5 +138,20 @@ export async function RequestAmigos(e) {
         console.error('Error en la petición de ingreso:', error);
         alert(error.message);
         return false;
+    }
+}
+
+export async function RequesteLastMessage(idSender, idReceiver) {
+    try {
+        const response = await fetch(`${NODE_API_URL}/messages/ultimo/${idSender}/${idReceiver}`);
+
+        if (!response.ok) {
+            throw new Error('Ocurrió un error inesperado en el servidor.');
+        }
+
+        const lastMessage = response.json
+        return lastMessage;
+    } catch(error) {
+        console.log("Error en la peticion : ", error);
     }
 }
