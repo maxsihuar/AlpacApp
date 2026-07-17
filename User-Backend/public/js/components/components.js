@@ -278,7 +278,7 @@ export const CardPeople = `
     <div class="card h-100">
 
         <img
-            src="/image/AlpacAPP-Media/alvaro.jpeg"
+            src="/image/AlpacAPP General.png"
             class="card-img-top"
             alt="Foto del usuario"
         >
@@ -286,11 +286,11 @@ export const CardPeople = `
         <div class="card-body">
 
             <h5 class="card-title title-color">
-                Marco
+                Alvaro
             </h5>
 
             <p class="card-text title-color">
-                Ingeniería de Sistemas
+                Streamer Retirado
             </p>
 
             <div class="d-flex justify-content-between">
@@ -312,7 +312,7 @@ export const CardPeople = `
 </div>
 `;
 export const FriendsContainer = `
-    <h3 class="fw-bold mb-3 title-color">
+    <h3 class="fw-bold mb-3 title-color2">
         Sugerencias de Amistad
     </h3>
 
@@ -348,7 +348,7 @@ data-bs-interval="3000">
 </div>
 `
 export const MediaContainer = `
-    <h3 class="fw-bold mb-3 title-color">
+    <h3 class="fw-bold mb-3 title-color2">
         Lo mejor de Internet
     </h3>
 
