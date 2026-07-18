@@ -19,5 +19,26 @@
     "LastName": "Holguino Nu\u00F1ez",
     "Email": "maxsihuar98@gmail.com",
     "contrase\u00F1a": "77676m"
+  },
+  { 
+    "Id": 920761841,
+    "Name": "Alvaro",
+    "LastName": "Quispe Ball\u00F3n",
+    "Email": "alvaroquispe@gmail.com",
+    "contrase\u00F1a": "contrasena"
+  },
+  {
+    "Id": 749558659,
+    "Name": "Carlos",
+    "LastName": "Quispe Crispin",
+    "Email": "carlosquispe@gmail.com",
+    "contrase\u00F1a": "contrasena"
+  },
+  {
+    "Id": 1321452333,
+    "Name": "Marco",
+    "LastName": "Aroni Perez",
+    "Email": "marcoaroni@gmail.com",
+    "contrase\u00F1a": "contrasena"
   }
 ]

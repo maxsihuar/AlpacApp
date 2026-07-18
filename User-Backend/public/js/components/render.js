@@ -335,10 +335,13 @@ export function cargarProfilePage(idUsuario) {
     const miId = localStorage.getItem("User");
     const esMiPerfil = Number(miId) === Number(idUsuario);
 
+    // Temporal, hasta conectar el backend
+    const esAmigo = false;
+
     const profileInfo = document.getElementById("profile-info");
 
     if (profileInfo) {
-        profileInfo.innerHTML = ProfileInfo(esMiPerfil);
+        profileInfo.innerHTML = ProfileInfo(esMiPerfil, esAmigo);
     }
 }
 
