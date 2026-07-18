@@ -105,6 +105,44 @@ class MessageController {
             })
         }
     }
+
+    async getliveMessage(socket, request) {
+        const fastifyInstance = request?.server;
+        const userId = Number(request.query.userId);
+
+        if (!socket || typeof socket.on !== 'function') {
+            console.error("No se recibió un socket con métodos activos.");
+            return;
+        }
+
+        if (!userId) {
+            console.log("Intento de conexión WebSocket sin userId");
+            socket.close(4000, "userId requerido");
+            return;
+        }
+        socket.userId = userId;
+        console.log("Usuario conectado correctamente");
+
+        socket.on("message", async (rawData) => {
+            try {
+                const data = JSON.parse(rawData.toString());
+                const newMessage = {
+                    senderId: Number(socket.userId),
+                    receiverId: Number(data.receiverId),
+                    content: data.content,
+                    createdAt: new Date()
+                };                
+
+                await messageService.getMessageLive(newMessage, socket, fastifyInstance.websocketServer);
+            } catch (error) {
+                socket.send(JSON.stringify({ error: "Formato no valido" }));
+            }
+        })
+
+        socket.on("close", () => {
+            fastifyInstance.log.info(`Usuario ${socket.userId} desconectado del WebSocket`);
+        });
+    }
 }
 
 module.exports = new MessageController();

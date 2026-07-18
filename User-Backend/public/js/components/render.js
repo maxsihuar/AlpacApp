@@ -11,12 +11,18 @@ import { RequestRegistrar } from "../service/client.js";
 import { RequestAmigos } from "../service/client.js";
 import { RequesteLastMessage } from "../service/client.js"
 import { RequesteConversation } from "../service/client.js";
+import { ConnectWebSocket, RequestSendMessage } from "../service/client.js";
 
 function cargarNavbar() {
     const body = document.querySelector("body");
     if (body) {
         body.insertAdjacentHTML("afterbegin", Navbar)
-    } 
+    }
+    const exit = document.getElementById("dropdown-salir");
+    exit.addEventListener("click", () => {
+        localStorage.setItem("Session", false);
+        localStorage.setItem("User", "");
+    });
 }
 
 async function cargarChats(idActivo = null) {
@@ -63,6 +69,9 @@ async function cargarChats(idActivo = null) {
 async function cargarMensajes(idAmigo = null) {
     const main = document.getElementById("main");
     try {
+        if (idAmigo == null) {
+            return;
+        }
         const amigo = await RequestUser(idAmigo);
         if (main) {
             main.innerHTML = MainChat(amigo.name+ " " + amigo.lastName);
@@ -82,21 +91,18 @@ async function cargarMensajes(idAmigo = null) {
 
         conversation.forEach((mensaje) => {
 
-            // CORREGIDO: senderId (con d minúscula como viene de tu API)
-            // Ojo: Si 'user' en localStorage es un String y senderId es un Number, usa == en vez de ===
             if (mensaje.senderId == user) {
-                // CORREGIDO: 'beforeend' para mantener el orden cronológico abajo
-                // CORREGIDO: mensaje.sentAt (como viene en tu API)
-                container.insertAdjacentHTML("beforeend", MessageSender({
+                container.insertAdjacentHTML("beforeend", MessageSender ({
                     time: mensaje.sentAt,
                     message: mensaje.content
                 }));
 
             } else {
-                container.insertAdjacentHTML("beforeend", MessageReceiver({
+                container.insertAdjacentHTML("beforeend", MessageReceiver ({
                     time: mensaje.sentAt,
                     message: mensaje.content
                 }));
+                container.scrollTop = container.scrollHeight;
             }
         });
     } catch (error) {
@@ -158,14 +164,7 @@ export function cargarRegisterForm(onNavigateToLogin) {
     }
 }
 
-export function cargarMain2Page() {
-    const body = document.querySelector("body");
-    if (body) {
-        body.insertAdjacentHTML("afterbegin", Navbar)
-    }
-}
-
-export function cargarChatPage(idAmigo = null) {
+export async function cargarChatPage(idAmigo = null) {
     cargarNavbar();
 
     const navbar = document.querySelector('header');
@@ -176,11 +175,73 @@ export function cargarChatPage(idAmigo = null) {
     const aside = document.getElementById("aside");
     if (aside) {
         aside.innerHTML = OffCanvas;
+    }    
+    await cargarChats(idAmigo);
+    await cargarMensajes(idAmigo);
+
+    ConnectWebSocket((response) => {
+        const container = document.getElementById("container-chats");
+        const user = localStorage.getItem("User");
+
+        if (!container) return;
+
+        if (response.event === "new_message" || response.event === "message_sent") {
+            const mensaje = response.data;
+
+            const msgSenderStr = String(mensaje.senderId);
+            const msgReceiverStr = String(mensaje.receiverId);
+            const idAmigoStr = String(idAmigo);
+            const userLogueadoStr = String(user);
+
+            // Si el mensaje es mío y va para el amigo activo
+            if (msgSenderStr === userLogueadoStr && msgReceiverStr === idAmigoStr) {
+                container.insertAdjacentHTML("beforeend", MessageSender({
+                    time: mensaje.createdAt ? new Date(mensaje.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Ahora',
+                    message: mensaje.content
+                }));
+                container.scrollTop = container.scrollHeight;
+                cargarChats(idAmigo);
+            }
+            // Si el mensaje viene del amigo activo hacia mí
+            else if (msgSenderStr === idAmigoStr) {
+                container.insertAdjacentHTML("beforeend", MessageReceiver({
+                    time: mensaje.createdAt ? new Date(mensaje.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Ahora',
+                    message: mensaje.content
+                }));
+                container.scrollTop = container.scrollHeight;
+                cargarChats(idAmigo);
+            }
+            else {
+                cargarChats(idAmigo);
+            }
+        }
+    });
+
+
+    const txtInput = document.getElementById("send-txt");
+    const btn = document.getElementById("send-msg");
+
+    function procesarEnvio() {
+        const txt = txtInput.value;
+        if (txt.trim() !== "") {
+            RequestSendMessage(idAmigo, txt);
+            txtInput.value = "";
+        }
     }
 
-    
-    cargarChats(idAmigo);
-    cargarMensajes(idAmigo);
+    // Escuchar el click en el botón
+    if (btn) {
+        btn.addEventListener("click", procesarEnvio);
+    }
+
+    if (txtInput) {
+        txtInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                procesarEnvio();
+            }
+        });
+    }
 }
 
 export function cargarMainPage() {

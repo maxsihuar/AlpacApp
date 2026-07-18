@@ -9,6 +9,8 @@ const NODE_API_URL =
         ? 'http://localhost:3000'  // Puerto habitual de Node.js (Express)
         : 'https://tu-api-node.onrender.com';
 
+let socketInstance = null;
+
 export async function RequestUser(id) {
     try {
         const response = await fetch(`${CSHARP_API_URL}/api/Graph_Controllers/user/${id}`);
@@ -164,7 +166,7 @@ export async function RequesteLastMessage(idSender, idReceiver) {
             throw new Error('Ocurrió un error inesperado en el servidor.');
         }
 
-        const lastMessage = response.json();
+        const lastMessage = await response.json();
         return lastMessage;
     } catch(error) {
         console.log("Error en la peticion : ", error);
@@ -179,9 +181,75 @@ export async function RequesteConversation(idSender, idReceiver) {
             throw new Error('Ocurrió un error inesperado en el servidor.');
         }
 
-        const lastMessage = response.json();
+        const lastMessage = await response.json();
         return lastMessage;
     } catch (error) {
         console.log("Error en la peticion : ", error);
     }
+}
+
+export function ConnectWebSocket(onMessageCallback) {
+    if (socketInstance && (socketInstance.readyState === WebSocket.OPEN || socketInstance.readyState === WebSocket.CONNECTING)) {
+        console.log("Reutilizando conexión WebSocket existente. Actualizando el callback de mensajes.");
+
+        socketInstance.onmessage = (e) => {
+            try {
+                const response = JSON.parse(e.data);
+                console.log("¡Mensaje recibido para pintar en pantalla!", response);
+                if (onMessageCallback) {
+                    onMessageCallback(response);
+                }
+            } catch (error) {
+                console.log("Error en el WebSocket", error);
+            }
+        };
+
+        return socketInstance;
+    }
+
+    const userId = localStorage.getItem("User");
+    if (!userId) { console.error("No se pudo extraer el id del usuario"); return; }
+
+    const wsTargetUrl = NODE_API_URL.replace(/^http/, 'ws');
+    socketInstance = new WebSocket(`${wsTargetUrl}/messages/live?userId=${userId}`);
+
+    socketInstance.onopen = () => { console.log("Conectado correctamente"); }
+
+    socketInstance.onmessage = (e) => {
+        try {
+            const response = JSON.parse(e.data);
+            console.log("¡Mensaje recibido para pintar en pantalla!", response);
+            if (onMessageCallback) {
+                onMessageCallback(response);
+            }
+        } catch (error) {
+            console.log("Error en el WebSocket", error);
+        }
+    };
+
+    socketInstance.onclose = (event) => {
+        console.warn(`WebSocket desconectado. Código: ${event.code}. Razón: ${event.reason}`);
+        socketInstance = null;
+    };
+
+    socketInstance.onerror = (error) => {
+        console.error("Error en el WebSocket:", error);
+    };
+
+    return socketInstance;
+}
+
+export function RequestSendMessage(receiverId, content) {
+    if (!socketInstance || socketInstance.readyState !== WebSocket.OPEN) {
+        console.error("No se pudo conectar con la instancia del WebSocket");
+        return false;
+    }
+
+    const payload = {
+        receiverId: receiverId,
+        content: content
+    };
+
+    socketInstance.send(JSON.stringify(payload));
+    return true;
 }

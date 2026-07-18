@@ -5,6 +5,7 @@ const fastify = require("fastify")({
     logger: true
 });
 
+
 const { connectDatabase } = require("./config/database");
 const start = async () => {
 
@@ -16,6 +17,8 @@ const start = async () => {
             // Esto permite que tu frontend (independientemente del puerto en localhost) haga peticiones
             origin: true
         });
+
+        await fastify.register(require("@fastify/websocket"));
 
         await fastify.register(require("@fastify/static"), {
             root: path.join(__dirname,"..", "public"),

@@ -26,6 +26,13 @@ async function messageRoutes(fastify, options) {
         "/messages/:id",
         messageController.deleteMessage
     );
+    fastify.get(
+        "/messages/live",
+        { websocket: true },
+        (socket, request) => {
+            messageController.getliveMessage(socket, request);
+        }
+    );
 }
 
 module.exports = messageRoutes;

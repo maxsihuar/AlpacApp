@@ -191,8 +191,8 @@ export const MainChat = (titulo) => {
     <!-- Footer fijo abajo (No se puede desplazar más abajo del borde inferior) -->
     <div class="p-3 bg-white border-top" style="flex-shrink: 0; width: 100%;">
         <form class="d-flex">
-            <input type="text" class="form-control me-2" placeholder="Escribe un mensaje...">
-            <button class="btn-chat btn btn-success" type="submit">Enviar</button>
+            <input id="send-txt" type="text" class="form-control me-2" placeholder="Escribe un mensaje...">
+            <button id="send-msg" class="btn-chat btn btn-success" type="submit">Enviar</button>
         </form>
     </div>
 </div>`;

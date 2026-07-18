@@ -83,6 +83,49 @@ class MessageService {
         })
         return result;
     }
-        
+    async getMessageLive(data, currentSocket, websocketServer) {
+
+        try {
+            const { senderId, receiverId, content } = data;
+
+            const message = new Message(senderId, receiverId, content);
+            const db = getDatabase();
+            const collection = db.collection("messages");
+            
+            const result = await collection.insertOne(message);
+            message._id = result.insertedId;
+
+            let active = false;
+            websocketServer.clients.forEach((client) => {
+                if (String(client.userId) === String(receiverId) && client.readyState === currentSocket.OPEN) {
+                    active = true;
+                }
+            });
+
+            message.isRead = active;
+
+            currentSocket.send(JSON.stringify({ event: "message_sent", data: message }));
+
+            const payload = JSON.stringify({
+                event: "new_message",
+                data: message
+            });
+
+            
+            websocketServer.clients.forEach((client) => {
+                const esDestinatario = client.userId === receiverId;
+                const esEmisorEnOtraPestana = client.userId === senderId && client !== currentSocket;
+
+                if ((esDestinatario || esEmisorEnOtraPestana) && client.readyState === currentSocket.OPEN) {
+                    client.send(payload);
+                    
+                }
+            });
+
+        } catch (error) {
+            console.log("Error al realizar la peticion", error)
+        }
+    }
+
 }
 module.exports = new MessageService();
