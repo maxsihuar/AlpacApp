@@ -1,6 +1,7 @@
 import { cargarLoginForm, cargarRegisterForm } from "../components/render.js";
 import { cargarMainPage } from "../components/render.js"
 import { cargarChatPage } from "../components/render.js"
+import { cargarContainerSearch } from "../components/render.js"
 import { cargarProfilePage } from "../components/render.js";
 import { cargarGraph } from "../components/render.js";
 function limpiarBodyConservandoScripts() {
@@ -40,6 +41,9 @@ const rutas = {
     "/graph": () => {
         cargarGraph();
     },
+    "/search": () => {
+        cargarContainerSearch();
+    }
 };
 
 function router() {
@@ -91,9 +95,10 @@ function routeToProfile() {
 function routeToChats() {
     window.location.hash = "/chats";}
 
-function routeToCGraph() {
-    window.location.hash = "/chats";
-}
+function routeToGraph() {
+    window.location.hash = "/graph";}
+function routeToSearch() {
+    window.location.hash = "/search";}
 
 function initializeVars() {
     if (localStorage.getItem("Session") === null) {

@@ -11,6 +11,11 @@ namespace Core_graph_api.Dtos
         public int TargetId { get; set; }
     }
 
+    public class UserSearchRequest
+    {
+        public string Nombre { get; set; } = string.Empty;
+    }
+
     public class DataUserLogin
     {
         [Required]

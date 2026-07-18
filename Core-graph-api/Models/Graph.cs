@@ -71,6 +71,22 @@
             }
             return null;
         }
+        public List<Node>? GetNodebyName(string name)
+        {
+            string searchName = name.Trim().ToLower();
+            List<Node>? nodes = new List<Node>();
+            foreach (List<Edge> l in adjacencyList.Values)
+            {
+                string fullName = $"{l[0].Source.Name} {l[0].Source.LastName}".Trim().ToLower();
+
+                if (l[0].Source.Name?.ToLower() == searchName || fullName == searchName)
+                {
+                    nodes.Add(l[0].Source);
+                }
+            }
+            return nodes;
+        }
+
 
         public List<Node> GetFriends(int id)
         {

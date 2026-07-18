@@ -17,10 +17,10 @@ export const Navbar = `
                             <img src="image/AlpacAPP Usuario.svg" width="50" height="50" alt="Usuario" />
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end text-small shadow">
-                            <li><a id="dropdown-perfil" class="dropdown-item" href="#/profile"><i class ="me-1 bi bi-person-circle"></i>Perfil</a></li>
-                            <li><a id="dropdown-ajustes" class="dropdown-item" href="#">Ajustes</a></li>
+                            <li><a id="dropdown-perfil" class="dropdown-item" href="#/profile"><i class ="me-2 bi bi-person-circle"></i>Perfil</a></li>
+                            <li><a id="dropdown-ajustes" class="dropdown-item" href="#"><i class=" me-2 bi bi-gear-fill"></i>Ajustes</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a id="dropdown-salir" class="dropdown-item" href="#">Cerrar Sesión</a></li>
+                            <li><a id="dropdown-salir" class="dropdown-item" href="#"><i class="me-2 bi bi-box-arrow-left"></i>Cerrar Sesión</a></li>
                         </ul>
                     </div>
                 </div>
@@ -33,8 +33,8 @@ export const Navbar = `
                         <a class="me-2 nav-link disabled" aria-disabled="true">Disfrutalo</a>
                     </div>
 
-                    <form class="d-flex mt-2 mt-lg-0" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                    <form id="search" class="d-flex mt-2 mt-lg-0" role="search">
+                        <input id="search-input" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
                         <button class="btn-navbar btn btn-outline-success" type="submit">Search</button>
                     </form>
                 </div>
@@ -264,14 +264,6 @@ export const OffCanvasChat = ({ id, name, time, message, active = false }) => {
     </a>`;
 };
 
-export const ContainerCards = `
-    <div class="container-fluid px-3 px-md-5 py-3">
-        <h3 id="Search_text" class="text-start">Personas encontradas
-        </h3>
-        <div id="container-cards" class="row mt-4">
-        </div>
-    </div>`;
-
 export function CardPeople(user) {
     return `
     <div class="col-md-4 col-lg-3 mb-4">
@@ -312,8 +304,49 @@ export function CardPeople(user) {
     </div>
     `;
 }
+export function FriendRequestCard(user) {
+
+    return `
+        <div class="col-md-4 col-lg-3 mb-4">
+
+            <div class="card h-100">
+
+                <img
+                    src="/image/AlpacAPP-Media/logo info.jpg"
+                    class="card-img-top"
+                    alt="Foto de perfil">
+
+                <div class="card-body text-center">
+
+                    <h5 class="card-title">
+                        ${user.name} ${user.lastName}
+                    </h5>
+
+                    <p class="card-text">
+                        ${user.email}
+                    </p>
+
+                    <button
+                        class="btn btn-success btn-sm btn-accept-request"
+                        data-id="${user.id}">
+                        Aceptar
+                    </button>
+
+                    <button
+                        class="btn btn-danger btn-sm btn-reject-request"
+                        data-id="${user.id}">
+                        Rechazar
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+    `;
+}
 export const FriendsContainer = `
-    <h3 class="fw-bold mb-3 title-color2">
+    <h3 id="txt-search" class="fw-bold mb-3 title-color2">
         Sugerencias de Amistad
     </h3>
 
@@ -321,6 +354,16 @@ export const FriendsContainer = `
 
     </div>
 `;
+export const FriendRequestsContainer = `
+    <h3 class = "fw-bold mb-3 title-color2">
+        Solicitudes de Amistad
+    </h3>
+
+    <div id="friend-request-cards" class="row">
+
+    </div>
+
+`
 export const Carousel = `
 <div id="carouselExampleIndicators"
 class="carousel slide"
@@ -359,6 +402,9 @@ export const MainPage = `
     <main class="main-page">
 
         <div class="container py-4">
+            <section id="friend-requests-section">
+
+            </section>
 
             <section id="friends-section">
 
@@ -372,6 +418,21 @@ export const MainPage = `
 
 </main >
 `;
+export const MainSearch = `
+    <main class="main-page">
+
+        <div class="container py-4">
+            <section id="friends-section">
+
+            </section>
+
+            </section>
+
+        </div>
+
+</main >
+`;
+
 export const ProfilePage = `
 <main class="profile-page mt-5">
 

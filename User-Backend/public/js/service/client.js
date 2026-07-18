@@ -34,12 +34,8 @@ export async function RequestEntrar(e) {
 
     btn.disabled = true;
 
-
-
     const dForm = new FormData(form);
     const data = Object.fromEntries(dForm.entries());
-
-    alert(`Datos enviados:\nEmail: ${data.Email}\nContraseña: ${data.Password}`);
 
     try {
         const response = await fetch(`${CSHARP_API_URL}/api/Graph_Controllers/validate_user`, {
@@ -92,8 +88,6 @@ export async function RequestRegistrar(e) {
 
     const dForm = new FormData(form);
     const data = Object.fromEntries(dForm.entries());
-
-    alert(`Datos enviados:\nName: ${data.Name}\nLastName: ${data.LastName} \nContraseña: ${data.Password}` );
 
     try {
         const response = await fetch(`${CSHARP_API_URL}/api/Graph_Controllers/new_user`, {
@@ -157,6 +151,41 @@ export async function RequestAmigos(e) {
         return false;
     }
 }
+
+export async function RequestAcceptFriendRequest(sourceId) {
+
+    const targetId = localStorage.getItem("User");
+
+    try {
+
+        const response = await fetch(
+            `${CSHARP_API_URL}/api/Graph_Controllers/accept_friend_request`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    sourceId: parseInt(sourceId),
+                    targetId: parseInt(targetId)
+                })
+            }
+        );
+
+        if (!response.ok)
+            throw new Error("No se pudo aceptar la solicitud.");
+
+        return true;
+
+    } catch (error) {
+
+        console.error(error);
+        return false;
+
+    }
+
+}
+
 export async function RequestSuggestedFriends() {
 
     const user = localStorage.getItem("User");
@@ -188,6 +217,7 @@ export async function RequestSuggestedFriends() {
     }
 
 }
+
 export async function RequestSendFriendRequest(receiverId) {
 
     const senderId = localStorage.getItem("User");
@@ -220,6 +250,31 @@ export async function RequestSendFriendRequest(receiverId) {
 
         console.error("Error:", error);
         return false;
+
+    }
+
+}
+
+export async function RequestFriendRequests() {
+
+    const user = localStorage.getItem("User");
+
+    try {
+
+        const response = await fetch(
+            `${CSHARP_API_URL}/api/Graph_Controllers/friend_requests/${user}`
+        );
+
+        if (!response.ok) {
+            throw new Error("No se pudieron obtener las solicitudes.");
+        }
+
+        return await response.json();
+
+    } catch (error) {
+
+        console.error(error);
+        return [];
 
     }
 
@@ -270,7 +325,38 @@ export async function RequesteConversation(idSender, idReceiver) {
         console.log("Error en la peticion : ", error);
     }
 }
+export async function RequesteSearchUser(nombre) {
+    try {
+        const response = await fetch(`${CSHARP_API_URL}/api/Graph_Controllers/search_user`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                Nombre : nombre
+            })
+        });
 
+        if (!response.ok) {
+            if (response.status === 401) {
+                throw new Error('Usuario o contraseña incorrectos.');
+                return [];
+            }
+            if (response.status === 404) {
+                throw new Error('No se pudo conectar con el servidor (Ruta no encontrada).');
+            }
+            throw new Error('Ocurrió un error inesperado en el servidor.');
+        }
+
+        const users = await response.json();
+
+        return users
+
+    } catch (error) {
+        console.error('Error en la petición de usuarios:', error);
+        return [];
+    }
+}
 export function ConnectWebSocket(onMessageCallback) {
     if (socketInstance && (socketInstance.readyState === WebSocket.OPEN || socketInstance.readyState === WebSocket.CONNECTING)) {
         console.log("Reutilizando conexión WebSocket existente. Actualizando el callback de mensajes.");
@@ -321,7 +407,6 @@ export function ConnectWebSocket(onMessageCallback) {
 
     return socketInstance;
 }
-
 export function RequestSendMessage(receiverId, content) {
     if (!socketInstance || socketInstance.readyState !== WebSocket.OPEN) {
         console.error("No se pudo conectar con la instancia del WebSocket");

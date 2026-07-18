@@ -20,43 +20,61 @@ namespace Core_graph_api.Services
         }
         public bool SendFriendRequest(int sourceId, int targetId)
         {
+            Console.WriteLine($"Solicitud recibida: {sourceId} -> {targetId}");
+
             if (_loadData.GetNodeById(sourceId) == null ||
-    _loadData.GetNodeById(targetId) == null)
+                _loadData.GetNodeById(targetId) == null)
             {
+                Console.WriteLine("Uno de los usuarios no existe.");
                 return false;
             }
-            
-        
+
             if (sourceId == targetId)
+            {
+                Console.WriteLine("No puedes enviarte una solicitud a ti mismo.");
                 return false;
-            bool existe = _friendRequests.Any(r => r.SourceId == sourceId &&
+            }
+
+            bool existe = _friendRequests.Any(r =>
+                r.SourceId == sourceId &&
                 r.TargetId == targetId);
+
             if (existe)
             {
+                Console.WriteLine("La solicitud ya existe.");
                 return false;
             }
-            _friendRequests.Add(new FriendRequest(sourceId,targetId));
+
+            _friendRequests.Add(new FriendRequest(sourceId, targetId));
+
+            Console.WriteLine($"Solicitud agregada. Total: {_friendRequests.Count}");
+
             return true;
         }
-        public List<FriendRequest> GetFriendRequests(int targetID)
+        public List<Node> GetFriendRequests(int targetId)
         {
-            return _friendRequests.Where(fr => fr.TargetId == targetID).ToList();
+            List<Node> requests = new List<Node>();
+
+            foreach (FriendRequest fr in _friendRequests)
+            {
+                if (fr.TargetId == targetId)
+                {
+                    Node? user = _graph.GetNode(fr.SourceId);
+
+                    if (user != null)
+                    {
+                        requests.Add(user);
+                    }
+                }
+            }
+
+            return requests;
         }
         public bool AcceptFriendRequest(int sourceId, int targetId)
         {
-            Console.WriteLine($"Parámetros recibidos: {sourceId} -> {targetId}");
-            Console.WriteLine($"Cantidad de solicitudes: {_friendRequests.Count}");
-
-            foreach (var fr in _friendRequests)
-            {
-                Console.WriteLine($"Guardada: {fr.SourceId} -> {fr.TargetId}");
-            }
-
             FriendRequest? request = _friendRequests.FirstOrDefault(fr =>
                 fr.SourceId == sourceId &&
                 fr.TargetId == targetId);
-
-            Console.WriteLine(request == null ? "NO ENCONTRADA" : "ENCONTRADA");
 
             if (request == null)
                 return false;
@@ -109,6 +127,12 @@ namespace Core_graph_api.Services
         {
             return _graph.GetNode(starrId);
         }
+
+        public List<Node>? Search_UserbyName(string name)
+        {
+            return _graph.GetNodebyName(name);
+        }
+
         public Edge Add_Edge(int sourceId, int targetId)
         {
  

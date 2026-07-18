@@ -21,6 +21,9 @@ namespace Core_graph_api.Controllers
         }
         //POST: Solicitudes
         [HttpPost("accept_friend_request")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult AcceptFriendRequest([FromBody] FriendshipRequestDto dt)
         {
             bool aceptada = _graph_services.AcceptFriendRequest(dt.SourceId, dt.TargetId);
@@ -32,12 +35,18 @@ namespace Core_graph_api.Controllers
 
             return Ok("Solicitud aceptada correctamente.");
         }
+
         [HttpGet("friend_requests/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult GetFriendRequests(int id)
         {
             return Ok(_graph_services.GetFriendRequests(id));
         }
+
         [HttpPost("send_friend_request")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult SendFriendRequest([FromBody] FriendshipRequestDto dt)
         {
             bool enviado = _graph_services.SendFriendRequest(dt.SourceId, dt.TargetId);
@@ -47,6 +56,7 @@ namespace Core_graph_api.Controllers
             }
             return Ok("solicitud enviada correctamente");
         }
+
         //POST: Peticiion para recibir y crear un nuevo nodo en el grafo
         [HttpPost("new_user")]
         [ProducesResponseType<Node>(StatusCodes.Status201Created)]
@@ -85,6 +95,24 @@ namespace Core_graph_api.Controllers
             return Ok(new {estado = flag.Item1, id = flag.Item2});
         }
 
+        [HttpPost("search_user")]
+        [ProducesResponseType<List<Node>>(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult PostDataUser([FromBody]  UserSearchRequest nombre)
+        {
+            if (!ModelState.IsValid || nombre == null || string.IsNullOrWhiteSpace(nombre.Nombre))
+            {
+                return BadRequest("El nombre es requerido.");
+            }
+            List<Node>? usuarios = _graph_services.Search_UserbyName(nombre.Nombre);
+            if (usuarios == null || !usuarios.Any())
+            {
+                return NotFound();
+            }
+            return Ok(usuarios);
+        }
+
         //GET: Peticion para obtener un usuario existente
         [HttpGet("user/{Id}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -111,34 +139,6 @@ namespace Core_graph_api.Controllers
                 return NotFound();
             }
             return Ok(friends);
-        }
-
-        //POST: Peticion para agregar un nuevo amigos(arista)
-        [HttpPost("add_friend")]
-        [ProducesResponseType<Node>(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult PostAddFriend([FromBody] FriendshipRequestDto dt)
-        {
-            if (!ModelState.IsValid) 
-            {
-                return BadRequest(ModelState);
-            }
-            _graph_services.Add_Edge(dt.SourceId, dt.TargetId);
-            return StatusCode(StatusCodes.Status201Created);
-        }
-
-        //POST: Peticion para aceptar un nuevo amigos(arista)
-        [HttpPost("accept_frien")]
-        [ProducesResponseType<Node>(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult PostAcceptFriend([FromBody] FriendshipRequestDto dt)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            _graph_services.Add_Edge(dt.SourceId, dt.TargetId);
-            return StatusCode(StatusCodes.Status201Created);
         }
 
         [HttpGet("graph/{id}")]
