@@ -9,11 +9,64 @@ namespace Core_graph_api.Services
     {
         private readonly Graph _graph;
         private readonly SaveData _data;
-
+        private List<FriendRequest> _friendRequests;
+        private readonly LoadData _loadData;
         public Graph_Services(Graph graph) 
         {
             _graph = graph;
             _data = new SaveData();
+            _friendRequests = new List<FriendRequest>();
+            _loadData = new LoadData();
+        }
+        public bool SendFriendRequest(int sourceId, int targetId)
+        {
+            if (_loadData.GetNodeById(sourceId) == null ||
+    _loadData.GetNodeById(targetId) == null)
+            {
+                return false;
+            }
+            
+        
+            if (sourceId == targetId)
+                return false;
+            bool existe = _friendRequests.Any(r => r.SourceId == sourceId &&
+                r.TargetId == targetId);
+            if (existe)
+            {
+                return false;
+            }
+            _friendRequests.Add(new FriendRequest(sourceId,targetId));
+            return true;
+        }
+        public List<FriendRequest> GetFriendRequests(int targetID)
+        {
+            return _friendRequests.Where(fr => fr.TargetId == targetID).ToList();
+        }
+        public bool AcceptFriendRequest(int sourceId, int targetId)
+        {
+            Console.WriteLine($"Parámetros recibidos: {sourceId} -> {targetId}");
+            Console.WriteLine($"Cantidad de solicitudes: {_friendRequests.Count}");
+
+            foreach (var fr in _friendRequests)
+            {
+                Console.WriteLine($"Guardada: {fr.SourceId} -> {fr.TargetId}");
+            }
+
+            FriendRequest? request = _friendRequests.FirstOrDefault(fr =>
+                fr.SourceId == sourceId &&
+                fr.TargetId == targetId);
+
+            Console.WriteLine(request == null ? "NO ENCONTRADA" : "ENCONTRADA");
+
+            if (request == null)
+                return false;
+
+            Add_Edge(sourceId, targetId);
+            Add_Edge(targetId, sourceId);
+
+            _friendRequests.Remove(request);
+
+            return true;
         }
         private int UniqueHash(string texto)
         {
@@ -58,14 +111,22 @@ namespace Core_graph_api.Services
         }
         public Edge Add_Edge(int sourceId, int targetId)
         {
+ 
+
             Node? sourceNode = _graph.GetNode(sourceId);
             Node? targetNode = _graph.GetNode(targetId);
+
+          
+
             if (sourceNode == null || targetNode == null)
             {
-                Console.WriteLine("Esta ingresandose mal el nodo");
+                Console.WriteLine("Está ingresándose mal el nodo");
+               
             }
+
             _graph.AddEdge(sourceNode, targetNode);
             _data.SaveEdge(new Data._Edge { Id = sourceId, Friend = new List<int> { targetId } });
+
             return new Edge(sourceNode, targetNode);
         }
 
@@ -85,13 +146,12 @@ namespace Core_graph_api.Services
             return friends;
         }
 
-        public List<Node?> BFS_Graph(int startId)
+        public List<Node> BFS_Graph(int startId)
         {
             Queue<(int id, int nivel)> cola = new Queue<(int, int)>();
             HashSet<int> visitados = new HashSet<int>();
-            List<Node?> recorrido = new List<Node?>();
+            List<Node> recorrido = new List<Node>();
 
-            // El nodo inicial está en el nivel 0
             cola.Enqueue((startId, 0));
             visitados.Add(startId);
 
@@ -99,11 +159,18 @@ namespace Core_graph_api.Services
             {
                 var (actual, nivel) = cola.Dequeue();
 
-                recorrido.Add(_graph.GetNode(actual));
-
-                // Si ya estamos en el segundo nivel, no seguimos expandiendo
+                // Solo agregamos los nodos del segundo nivel
                 if (nivel == 2)
+                {
+                    Node? nodo = _graph.GetNode(actual);
+
+                    if (nodo != null)
+                    {
+                        recorrido.Add(nodo);
+                    }
+
                     continue;
+                }
 
                 List<Node> vecinos = _graph.GetNeighbors(actual);
 
@@ -116,6 +183,7 @@ namespace Core_graph_api.Services
                     }
                 }
             }
+
             return recorrido;
         }
 

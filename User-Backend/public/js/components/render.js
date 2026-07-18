@@ -13,6 +13,8 @@ import { RequestAmigos } from "../service/client.js";
 import { RequestGraph } from "../service/client.js"
 import { RequesteLastMessage } from "../service/client.js"
 import { RequesteConversation } from "../service/client.js";
+import { RequestSuggestedFriends } from "../service/client.js";
+import { RequestSendFriendRequest } from "../service/client.js";
 import { ConnectWebSocket, RequestSendMessage } from "../service/client.js";
 
 function cargarNavbar() {
@@ -246,13 +248,9 @@ export async function cargarChatPage(idAmigo = null) {
     }
 }
 
-export function cargarMainPage() {
+export async function cargarMainPage() {
 
-    const body = document.querySelector("body");
-
-    if (body) {
-        body.insertAdjacentHTML("afterbegin", Navbar);
-    }
+    cargarNavbar();
 
     const navbar = document.querySelector("header");
 
@@ -267,16 +265,37 @@ export function cargarMainPage() {
     } else {
         console.warn("No se encontró friends-section");
     }
-    cargarCardPeople();
+    await cargarCardPeople();
     document.querySelectorAll(".btn-ver-profile").forEach(btn => {
 
         btn.addEventListener("click", () => {
 
-            window.location.hash = "#/profile/2";
+            window.location.hash = `#/profile/${btn.dataset.id}`;
 
         });
 
     });
+    document.querySelectorAll(".btn-add-friend").forEach(btn => {
+
+        btn.addEventListener("click", async () => {
+
+            const enviado = await RequestSendFriendRequest(btn.dataset.id);
+
+            if (enviado) {
+
+                btn.disabled = true;
+                btn.textContent = "Solicitud enviada";
+
+            } else {
+
+                alert("No se pudo enviar la solicitud.");
+
+            }
+
+        });
+
+    });
+
     const media = document.getElementById("media-section");
 
     if (media) {
@@ -295,38 +314,32 @@ export function cargarContainerSearch() {
     }
 }
 
-export function cargarCardPeople() {
+export async function cargarCardPeople() {
 
     const container = document.getElementById("friends-cards");
 
-    if (container) {
+    if (!container) return;
 
-        for (let i = 0; i < 10; i++) {
+    container.innerHTML = "";
 
-            container.insertAdjacentHTML("beforeend", CardPeople);
+    try {
 
-        }
+        const users = await RequestSuggestedFriends();
 
-        document.querySelectorAll(".btn-ver-profile").forEach(btn => {
-
-            btn.addEventListener("click", () => {
-
-                window.location.hash = "#/profile/2";
-
-            });
-
+        users.forEach(user => {
+            container.insertAdjacentHTML(
+                "beforeend",
+                CardPeople(user)
+            );
         });
 
+    } catch (error) {
+        console.error(error);
     }
-
 }
 export function cargarProfilePage(idUsuario) {
 
-    const body = document.querySelector("body");
-
-    if (body) {
-        body.insertAdjacentHTML("afterbegin", Navbar);
-    }
+    cargarNavbar();
 
     const navbar = document.querySelector("header");
 

@@ -272,34 +272,36 @@ export const ContainerCards = `
         </div>
     </div>`;
 
-export const CardPeople = `
-<div class="col-md-4 col-lg-3 mb-4">
+export function CardPeople(user) {
+    return `
+    <div class="col-md-4 col-lg-3 mb-4">
 
-    <div class="card h-100">
+        <div class="card h-100">
 
-        <img
-            src="/image/AlpacAPP General.png"
-            class="card-img-top"
-            alt="Foto del usuario"
-        >
+            <img
+                src="/image/AlpacAPP-Media/logo info.jpg"
+                class="card-img-top"
+                alt="Foto de perfil">
 
-        <div class="card-body">
+            <div class="card-body text-center">
 
-            <h5 class="card-title title-color">
-                Alvaro
-            </h5>
+                <h5 class="card-title">
+                    ${user.name} ${user.lastName}
+                </h5>
 
-            <p class="card-text title-color">
-                Streamer Retirado
-            </p>
+                <p class="card-text">
+                    ${user.email}
+                </p>
 
-            <div class="d-flex justify-content-between">
-
-                <button class="btn btn-primary btn-sm button-color btn-ver-profile">
+                <button
+                    class="btn btn-primary btn-sm button-color btn-ver-profile"
+                    data-id="${user.id}">
                     Ver perfil
                 </button>
 
-                <button class="btn btn-outline-primary btn-sm button-color">
+                <button
+                    class="btn btn-outline-primary btn-sm button-color btn-add-friend"
+                    data-id="${user.id}">
                     Agregar
                 </button>
 
@@ -308,9 +310,8 @@ export const CardPeople = `
         </div>
 
     </div>
-
-</div>
-`;
+    `;
+}
 export const FriendsContainer = `
     <h3 class="fw-bold mb-3 title-color2">
         Sugerencias de Amistad

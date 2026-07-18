@@ -157,6 +157,73 @@ export async function RequestAmigos(e) {
         return false;
     }
 }
+export async function RequestSuggestedFriends() {
+
+    const user = localStorage.getItem("User");
+
+    try {
+
+        const response = await fetch(
+            `${CSHARP_API_URL}/api/Graph_Controllers/suggested_friends/${user}`
+        );
+
+        if (!response.ok) {
+
+            if (response.status === 404) {
+                return [];
+            }
+
+            throw new Error("No se pudieron obtener las sugerencias.");
+        }
+
+        const users = await response.json();
+
+        return users;
+
+    } catch (error) {
+
+        console.error("Error al obtener sugerencias:", error);
+        return [];
+
+    }
+
+}
+export async function RequestSendFriendRequest(receiverId) {
+
+    const senderId = localStorage.getItem("User");
+
+    try {
+
+        const response = await fetch(
+            `${CSHARP_API_URL}/api/Graph_Controllers/send_friend_request`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    sourceId: Number(senderId),
+                    targetId: Number(receiverId)
+                })
+            }
+        );
+
+        if (!response.ok) {
+
+            throw new Error("No se pudo enviar la solicitud.");
+
+        }
+
+        return true;
+
+    } catch (error) {
+
+        console.error("Error:", error);
+        return false;
+
+    }
+
+}
 
 export async function RequestGraph(e) {
     try {
