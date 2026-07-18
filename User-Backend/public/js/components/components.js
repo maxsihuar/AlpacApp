@@ -389,14 +389,14 @@ export const ProfilePage = `
 
 </main>
 `;
-export function ProfileInfo(esMiPerfil){
+export function ProfileInfo(esMiPerfil, esAmigo){
     return `
 <div class="card shadow-sm border-0">
 
     <div class="card-body text-center">
 
         <img
-            src="/image/AlpacAPP General.png"
+            src="/image/AlpacAPP-Media/Yuri-san.jpeg"
             alt="Foto de perfil"
             class="rounded-circle border mb-3"
             width="170"
@@ -406,13 +406,13 @@ export function ProfileInfo(esMiPerfil){
         <h2
             id="profile-name"
             class="fw-bold title-color">
-            Marco Pérez
+            Yuri-chan
         </h2>
 
         <p
             id="profile-description"
             class="text-muted mb-1">
-            Streamer retirado
+            Mascufemenino
         </p>
 
         <p
@@ -423,21 +423,24 @@ export function ProfileInfo(esMiPerfil){
 
         <div class="d-flex justify-content-center gap-3">
 
-            ${esMiPerfil
+            ${
+        esMiPerfil
             ? `
-        <button class="btn btn-primary button-color">
-            Modificar Perfil
-        </button>
-      `
-            : `
-        <button class="btn btn-primary button-color">
-            Agregar amigo
-        </button>
-
-        <button class="btn btn-outline-danger">
-            Eliminar amigo
-        </button>
-      `
+    <button class="btn btn-primary button-color">
+        Modificar Perfil
+    </button>
+`
+            : esAmigo
+                ? `
+    <button class="btn btn-outline-danger">
+        Eliminar amigo
+    </button>
+`
+                : `
+    <button class="btn btn-primary button-color">
+        Agregar amigo
+    </button>
+`
 }
         </div>
 
