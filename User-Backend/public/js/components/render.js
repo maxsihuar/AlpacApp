@@ -3,7 +3,7 @@ import { OffCanvas, MainChat, ContainerChat, OffCanvasChat } from "./components.
 import { MessageSender, MessageReceiver } from "./components.js";
 import { LoginForm } from "./components.js";
 import { RegisterFomr } from "./components.js";
-import { ContainerCards, CardPeople, MainPage, FriendsContainer,MediaContainer } from "./components.js";
+import { ProfilePosts, ProfileInfo,ProfilePage, ContainerCards, CardPeople, MainPage, FriendsContainer,MediaContainer } from "./components.js";
 
 import { RequestUser } from "../service/client.js";
 import { RequestEntrar } from "../service/client.js";
@@ -266,6 +266,15 @@ export function cargarMainPage() {
         console.warn("No se encontró friends-section");
     }
     cargarCardPeople();
+    document.querySelectorAll(".btn-ver-profile").forEach(btn => {
+
+        btn.addEventListener("click", () => {
+
+            window.location.hash = "#/profile/2";
+
+        });
+
+    });
     const media = document.getElementById("media-section");
 
     if (media) {
@@ -296,8 +305,41 @@ export function cargarCardPeople() {
 
         }
 
+        document.querySelectorAll(".btn-ver-profile").forEach(btn => {
+
+            btn.addEventListener("click", () => {
+
+                window.location.hash = "#/profile/2";
+
+            });
+
+        });
+
     }
 
+}
+export function cargarProfilePage(idUsuario) {
+
+    const body = document.querySelector("body");
+
+    if (body) {
+        body.insertAdjacentHTML("afterbegin", Navbar);
+    }
+
+    const navbar = document.querySelector("header");
+
+    if (navbar) {
+        navbar.insertAdjacentHTML("afterend", ProfilePage);
+    }
+
+    const miId = localStorage.getItem("User");
+    const esMiPerfil = Number(miId) === Number(idUsuario);
+
+    const profileInfo = document.getElementById("profile-info");
+
+    if (profileInfo) {
+        profileInfo.innerHTML = ProfileInfo(esMiPerfil);
+    }
 }
 
 // Evento unificado: Corre todo en orden secuencial estricto

@@ -27,6 +27,7 @@ export const Navbar = `
 
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav me-auto my-2 my-lg-0">
+                        <a class="me-2 nav-link" href="#/profile"><i class ="me-1 bi bi-person-circle"></i>Mi Perfil</a>"
                         <a class="me-2 nav-link active" aria-current="page" href="#/main"><i class="me-1 bi bi-house"></i>Hogar</a>
                         <a class="me-2 nav-link" href="#/chats"><i class="me-1 bi bi-chat"></i>Chats</a>
                         <a class="me-2 nav-link" href="#/grafo"><i class="me-2 bi bi-bezier2"></i>Grafo</a>
@@ -278,7 +279,7 @@ export const CardPeople = `
     <div class="card h-100">
 
         <img
-            src="/image/AlpacAPP-Media/alvaro.jpeg"
+            src="/image/AlpacAPP General.png"
             class="card-img-top"
             alt="Foto del usuario"
         >
@@ -286,16 +287,16 @@ export const CardPeople = `
         <div class="card-body">
 
             <h5 class="card-title title-color">
-                Marco
+                Alvaro
             </h5>
 
             <p class="card-text title-color">
-                Ingeniería de Sistemas
+                Streamer Retirado
             </p>
 
             <div class="d-flex justify-content-between">
 
-                <button class="btn btn-primary btn-sm button-color">
+                <button class="btn btn-primary btn-sm button-color btn-ver-profile">
                     Ver perfil
                 </button>
 
@@ -312,7 +313,7 @@ export const CardPeople = `
 </div>
 `;
 export const FriendsContainer = `
-    <h3 class="fw-bold mb-3 title-color">
+    <h3 class="fw-bold mb-3 title-color2">
         Sugerencias de Amistad
     </h3>
 
@@ -348,7 +349,7 @@ data-bs-interval="3000">
 </div>
 `
 export const MediaContainer = `
-    <h3 class="fw-bold mb-3 title-color">
+    <h3 class="fw-bold mb-3 title-color2">
         Lo mejor de Internet
     </h3>
 
@@ -371,3 +372,83 @@ export const MainPage = `
 
 </main >
 `;
+export const ProfilePage = `
+<main class="profile-page mt-5">
+
+    <div class="container py-5">
+
+        <section id="profile-info">
+
+        </section>
+
+        <section id="profile-posts">
+
+        </section>
+
+    </div>
+
+</main>
+`;
+export function ProfileInfo(esMiPerfil){
+    return `
+<div class="card shadow-sm border-0">
+
+    <div class="card-body text-center">
+
+        <img
+            src="/image/AlpacAPP General.png"
+            alt="Foto de perfil"
+            class="rounded-circle border mb-3"
+            width="170"
+            height="170"
+            style="object-fit: cover;">
+
+        <h2
+            id="profile-name"
+            class="fw-bold title-color">
+            Marco Pérez
+        </h2>
+
+        <p
+            id="profile-description"
+            class="text-muted mb-1">
+            Streamer retirado
+        </p>
+
+        <p
+            id="profile-email"
+            class="mb-4">
+            correo@correo.com
+        </p>
+
+        <div class="d-flex justify-content-center gap-3">
+
+            ${esMiPerfil
+            ? `
+        <button class="btn btn-primary button-color">
+            Modificar Perfil
+        </button>
+      `
+            : `
+        <button class="btn btn-primary button-color">
+            Agregar amigo
+        </button>
+
+        <button class="btn btn-outline-danger">
+            Eliminar amigo
+        </button>
+      `
+}
+        </div>
+
+    </div>
+
+</div>
+`;
+}
+
+export const ProfilePosts = `
+
+
+
+`
