@@ -20,7 +20,7 @@
     "Email": "maxsihuar98@gmail.com",
     "contrase\u00F1a": "77676m"
   },
-  { 
+  {
     "Id": 920761841,
     "Name": "Alvaro",
     "LastName": "Quispe Ball\u00F3n",
@@ -39,6 +39,13 @@
     "Name": "Marco",
     "LastName": "Aroni Perez",
     "Email": "marcoaroni@gmail.com",
+    "contrase\u00F1a": "contrasena"
+  },
+  {
+    "Id": 1207068174,
+    "Name": "Victor Yuri",
+    "LastName": "Morales Valeriano",
+    "Email": "yurimorales@gmail.com",
     "contrase\u00F1a": "contrasena"
   }
 ]
