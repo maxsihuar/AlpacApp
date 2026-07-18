@@ -38,6 +38,23 @@ namespace Core_graph_api.Data
         private string pathEdge;
         private string jsonEdge = string.Empty;
 
+        public _Node? GetNodeById(int id)
+        {
+            if (!File.Exists(pathNode))
+                return null;
+
+            string jsonNode = File.ReadAllText(pathNode);
+
+            var opciones = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            List<_Node>? list = JsonSerializer.Deserialize<List<_Node>>(jsonNode, opciones);
+
+            return list?.FirstOrDefault(n => n.Id == id);
+        }
+
         public LoadData()
         {
             string rutaProyecto = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "Data"));

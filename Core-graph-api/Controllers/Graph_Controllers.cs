@@ -18,7 +18,34 @@ namespace Core_graph_api.Controllers
         {
             _graph_services = graph_services;
         }
+        //POST: Solicitudes
+        [HttpPost("accept_friend_request")]
+        public IActionResult AcceptFriendRequest([FromBody] FriendshipRequestDto dt)
+        {
+            bool aceptada = _graph_services.AcceptFriendRequest(dt.SourceId, dt.TargetId);
 
+            if (!aceptada)
+            {
+                return BadRequest("No se pudo aceptar la solicitud.");
+            }
+
+            return Ok("Solicitud aceptada correctamente.");
+        }
+        [HttpGet("friend_requests/{id}")]
+        public IActionResult GetFriendRequests(int id)
+        {
+            return Ok(_graph_services.GetFriendRequests(id));
+        }
+        [HttpPost("send_friend_request")]
+        public IActionResult SendFriendRequest([FromBody] FriendshipRequestDto dt)
+        {
+            bool enviado = _graph_services.SendFriendRequest(dt.SourceId, dt.TargetId);
+            if (!enviado)
+            {
+                return BadRequest("No se pudo enviar la solicitud");
+            }
+            return Ok("solicitud enviada correctamente");
+        }
         //POST: Peticiion para recibir y crear un nuevo nodo en el grafo
         [HttpPost("new_user")]
         [ProducesResponseType<Node>(StatusCodes.Status201Created)]
@@ -110,6 +137,14 @@ namespace Core_graph_api.Controllers
             }
             _graph_services.Add_Edge(dt.SourceId, dt.TargetId);
             return StatusCode(StatusCodes.Status201Created);
+        }
+        // GET: Obtener sugerencias de amistad
+        [HttpGet("suggested_friends/{id}")]
+        public ActionResult<List<Node>> GetSuggestedFriends(int id)
+        {
+            List<Node> sugerencias = _graph_services.BFS_Graph(id);
+
+            return Ok(sugerencias);
         }
     }
 }
