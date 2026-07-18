@@ -157,6 +157,39 @@ export async function RequestAmigos(e) {
         return false;
     }
 }
+export async function RequestAcceptFriendRequest(sourceId) {
+
+    const targetId = localStorage.getItem("User");
+
+    try {
+
+        const response = await fetch(
+            `${CSHARP_API_URL}/api/Graph_Controllers/accept_friend_request`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    sourceId: parseInt(sourceId),
+                    targetId: parseInt(targetId)
+                })
+            }
+        );
+
+        if (!response.ok)
+            throw new Error("No se pudo aceptar la solicitud.");
+
+        return true;
+
+    } catch (error) {
+
+        console.error(error);
+        return false;
+
+    }
+
+}
 export async function RequestSuggestedFriends() {
 
     const user = localStorage.getItem("User");
@@ -220,6 +253,30 @@ export async function RequestSendFriendRequest(receiverId) {
 
         console.error("Error:", error);
         return false;
+
+    }
+
+}
+export async function RequestFriendRequests() {
+
+    const user = localStorage.getItem("User");
+
+    try {
+
+        const response = await fetch(
+            `${CSHARP_API_URL}/api/Graph_Controllers/friend_requests/${user}`
+        );
+
+        if (!response.ok) {
+            throw new Error("No se pudieron obtener las solicitudes.");
+        }
+
+        return await response.json();
+
+    } catch (error) {
+
+        console.error(error);
+        return [];
 
     }
 

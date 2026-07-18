@@ -3,7 +3,7 @@ import { OffCanvas, MainChat, ContainerChat, OffCanvasChat } from "./components.
 import { MessageSender, MessageReceiver } from "./components.js";
 import { LoginForm } from "./components.js";
 import { RegisterFomr } from "./components.js";
-import { ProfilePosts, ProfileInfo, ProfilePage, ContainerCards, CardPeople, MainPage, FriendsContainer, MediaContainer } from "./components.js";
+import { FriendRequestCard,FriendRequestsContainer, ProfilePosts, ProfileInfo, ProfilePage, ContainerCards, CardPeople, MainPage, FriendsContainer, MediaContainer } from "./components.js";
 import { MainGraph } from "./components.js";
 
 import { RequestUser } from "../service/client.js";
@@ -15,6 +15,7 @@ import { RequesteLastMessage } from "../service/client.js"
 import { RequesteConversation } from "../service/client.js";
 import { RequestSuggestedFriends } from "../service/client.js";
 import { RequestSendFriendRequest } from "../service/client.js";
+import { RequestFriendRequests, RequestAcceptFriendRequest} from "../service/client.js";
 import { ConnectWebSocket, RequestSendMessage } from "../service/client.js";
 
 function cargarNavbar() {
@@ -257,7 +258,14 @@ export async function cargarMainPage() {
     if (navbar) {
         navbar.insertAdjacentHTML("afterend", MainPage);
     }
+    const friendRequests = document.getElementById("friend-requests-section");
 
+    if (friendRequests) {
+        friendRequests.innerHTML = FriendRequestsContainer;
+    } else {
+        console.warn("No se encontró friend-requests-section");
+    }
+    await cargarFriendRequests();
     const friends = document.getElementById("friends-section");
 
     if (friends) {
@@ -313,6 +321,56 @@ export function cargarContainerSearch() {
         navbar.insertAdjacentHTML("afterend", ContainerCards);
     }
 }
+export async function cargarFriendRequests() {
+
+    const container = document.getElementById("friend-request-cards");
+
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    try {
+
+        const users = await RequestFriendRequests();
+
+        console.log("Solicitudes recibidas:", users);
+
+        users.forEach(user => {
+            container.insertAdjacentHTML(
+                "beforeend",
+                FriendRequestCard(user)
+            );
+        });
+        document.querySelectorAll(".btn-accept-request").forEach(btn => {
+
+            btn.addEventListener("click", async () => {
+
+                const sourceId = btn.dataset.id;
+
+                const ok = await RequestAcceptFriendRequest(sourceId);
+
+                if (ok) {
+
+                    alert("Solicitud aceptada.");
+
+                    cargarFriendRequests();
+                    cargarCardPeople();
+
+                } else {
+
+                    alert("No se pudo aceptar la solicitud.");
+
+                }
+
+            });
+
+        });
+
+    } catch (error) {
+        console.error(error);
+    }
+
+}
 
 export async function cargarCardPeople() {
 
@@ -331,6 +389,30 @@ export async function cargarCardPeople() {
                 "beforeend",
                 CardPeople(user)
             );
+        });
+        document.querySelectorAll(".btn-add-friend").forEach(btn => {
+
+            btn.addEventListener("click", async () => {
+
+                const receiverId = btn.dataset.id;
+
+                const ok = await RequestSendFriendRequest(receiverId);
+
+                if (ok) {
+
+                    alert("Solicitud enviada.");
+
+                    btn.disabled = true;
+                    btn.textContent = "Enviada";
+
+                } else {
+
+                    alert("No se pudo enviar la solicitud.");
+
+                }
+
+            });
+
         });
 
     } catch (error) {

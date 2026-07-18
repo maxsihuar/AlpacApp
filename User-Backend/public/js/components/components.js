@@ -312,6 +312,47 @@ export function CardPeople(user) {
     </div>
     `;
 }
+export function FriendRequestCard(user) {
+
+    return `
+        <div class="col-md-4 col-lg-3 mb-4">
+
+            <div class="card h-100">
+
+                <img
+                    src="/image/AlpacAPP-Media/logo info.jpg"
+                    class="card-img-top"
+                    alt="Foto de perfil">
+
+                <div class="card-body text-center">
+
+                    <h5 class="card-title">
+                        ${user.name} ${user.lastName}
+                    </h5>
+
+                    <p class="card-text">
+                        ${user.email}
+                    </p>
+
+                    <button
+                        class="btn btn-success btn-sm btn-accept-request"
+                        data-id="${user.id}">
+                        Aceptar
+                    </button>
+
+                    <button
+                        class="btn btn-danger btn-sm btn-reject-request"
+                        data-id="${user.id}">
+                        Rechazar
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+    `;
+}
 export const FriendsContainer = `
     <h3 class="fw-bold mb-3 title-color2">
         Sugerencias de Amistad
@@ -321,6 +362,16 @@ export const FriendsContainer = `
 
     </div>
 `;
+export const FriendRequestsContainer = `
+    <h3 class = "fw-bold mb-3 title-color2">
+        Solicitudes de Amistad
+    </h3>
+
+    <div id="friend-request-cards" class="row">
+
+    </div>
+
+`
 export const Carousel = `
 <div id="carouselExampleIndicators"
 class="carousel slide"
@@ -359,6 +410,9 @@ export const MainPage = `
     <main class="main-page">
 
         <div class="container py-4">
+            <section id="friend-requests-section">
+
+            </section>
 
             <section id="friends-section">
 
