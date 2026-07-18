@@ -113,8 +113,8 @@ class MessageService {
 
             
             websocketServer.clients.forEach((client) => {
-                const esDestinatario = client.userId === receiverId;
-                const esEmisorEnOtraPestana = client.userId === senderId && client !== currentSocket;
+                const esDestinatario = String(client.userId) === String(receiverId);
+                const esEmisorEnOtraPestana = String(client.userId) === String(senderId) && client !== currentSocket;
 
                 if ((esDestinatario || esEmisorEnOtraPestana) && client.readyState === currentSocket.OPEN) {
                     client.send(payload);
