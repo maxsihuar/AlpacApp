@@ -1,6 +1,7 @@
 import { cargarLoginForm, cargarRegisterForm } from "../components/render.js";
 import { cargarMainPage } from "../components/render.js"
 import { cargarChatPage } from "../components/render.js"
+import { cargarProfilePage } from "../components/render.js";
 function limpiarBodyConservandoScripts() {
     const body = document.querySelector("body");
     if (!body) return;
@@ -31,7 +32,10 @@ const rutas = {
     },
     "/chats": () => {
         cargarChatPage();
-    }
+    },
+    "/profile": () => {
+        cargarProfilePage(localStorage.getItem("User"));
+    },
 };
 
 function router() {
@@ -48,6 +52,12 @@ function router() {
         const idAmigo = hashActual.replace("#/chats/", "");
 
         cargarChatPage(idAmigo);
+        return;
+    }
+    if (hashActual.startsWith("#/profile/")) {
+        const idUsuario = hashActual.replace("#/profile/", "");
+
+        cargarProfilePage(idUsuario);
         return;
     }
 
@@ -71,7 +81,9 @@ function routeToLogin() {
 
 function routeToMain() {
     window.location.hash = "/main"; }
-
+function routeToProfile() {
+    window.location.hash = "/profile";
+}
 function routeToChats() {
     window.location.hash = "/chats"; }
 
