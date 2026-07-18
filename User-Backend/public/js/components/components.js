@@ -17,7 +17,7 @@ export const Navbar = `
                             <img src="image/AlpacAPP Usuario.svg" width="50" height="50" alt="Usuario" />
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end text-small shadow">
-                            <li><a id="dropdown-perfil" class="dropdown-item" href="#">Perfil</a></li>
+                            <li><a id="dropdown-perfil" class="dropdown-item" href="#/profile"><i class ="me-1 bi bi-person-circle"></i>Perfil</a></li>
                             <li><a id="dropdown-ajustes" class="dropdown-item" href="#">Ajustes</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a id="dropdown-salir" class="dropdown-item" href="#">Cerrar Sesión</a></li>
@@ -27,10 +27,9 @@ export const Navbar = `
 
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav me-auto my-2 my-lg-0">
-                        <a class="me-2 nav-link" href="#/profile"><i class ="me-1 bi bi-person-circle"></i>Mi Perfil</a>"
                         <a class="me-2 nav-link active" aria-current="page" href="#/main"><i class="me-1 bi bi-house"></i>Hogar</a>
                         <a class="me-2 nav-link" href="#/chats"><i class="me-1 bi bi-chat"></i>Chats</a>
-                        <a class="me-2 nav-link" href="#/grafo"><i class="me-2 bi bi-bezier2"></i>Grafo</a>
+                        <a class="me-2 nav-link" href="#/graph"><i class="me-2 bi bi-bezier2"></i>Grafo</a>
                         <a class="me-2 nav-link disabled" aria-disabled="true">Disfrutalo</a>
                     </div>
 
@@ -455,3 +454,12 @@ export const ProfilePosts = `
 
 
 `
+
+export const MainGraph = `
+    <div class="container-fluid p-0">
+        <div id="container-graph" 
+             class="pt-5" 
+             style="width: 100%; height: calc(100vh - 60px); min-height: 500px; display: block;">
+        </div>
+    </div>
+`;

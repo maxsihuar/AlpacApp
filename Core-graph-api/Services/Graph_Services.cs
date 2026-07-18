@@ -1,7 +1,8 @@
-﻿using System.Text;
-using System;
+﻿using Core_graph_api.Data;
 using Core_graph_api.Models;
-using Core_graph_api.Data;
+using System;
+using System.Collections.Generic;
+using System.Text;
 namespace Core_graph_api.Services
 {
     public class Graph_Services
@@ -112,6 +113,46 @@ namespace Core_graph_api.Services
                     {
                         visitados.Add(vecino.Id);
                         cola.Enqueue((vecino.Id, nivel + 1));
+                    }
+                }
+            }
+            return recorrido;
+        }
+
+        public Dictionary<string, List<string>>? BFS_Graph_all(int startId)
+        {
+            Queue<int> cola = new Queue<int>();
+            HashSet<int> visitados = new HashSet<int>();
+            Dictionary<string, List<string>> recorrido = new Dictionary<string, List<string>>();
+
+            // El nodo inicial está en el nivel 0
+            cola.Enqueue(startId);
+            visitados.Add(startId);
+
+            while (cola.Count > 0)
+            {
+                var actual = cola.Dequeue();
+                Node? nodoActual = _graph.GetNode(actual);
+                if (nodoActual == null || string.IsNullOrEmpty(nodoActual.Name))
+                {
+                    continue;
+                }
+
+                if (!recorrido.ContainsKey(nodoActual.Name))
+                {
+                    recorrido[nodoActual.Name] = new List<string>();
+                }
+
+                List<Node> vecinos = _graph.GetNeighbors(actual);
+                if (vecinos == null) continue;
+
+                foreach (Node vecino in vecinos)
+                {
+                    if (!visitados.Contains(vecino.Id))
+                    {
+                        recorrido[nodoActual.Name].Add(vecino.Name);
+                        visitados.Add(vecino.Id);
+                        cola.Enqueue(vecino.Id);
                     }
                 }
             }

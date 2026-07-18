@@ -158,6 +158,22 @@ export async function RequestAmigos(e) {
     }
 }
 
+export async function RequestGraph(e) {
+    try {
+        const user = Number(localStorage.getItem("User"));
+        const response = await fetch(`${CSHARP_API_URL}/api/Graph_Controllers/graph/${user}`);
+
+        if (!response.ok) {
+            throw new Error('Ocurrió un error inesperado en el servidor.');
+        }
+
+        const graph = await response.json();
+        return graph;
+    } catch (error) {
+        console.log("Error en la peticion : ", error);
+    }
+}
+
 export async function RequesteLastMessage(idSender, idReceiver) {
     try {
         const response = await fetch(`${NODE_API_URL}/messages/ultimo/${idSender}/${idReceiver}`);

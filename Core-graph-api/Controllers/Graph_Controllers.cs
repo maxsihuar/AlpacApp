@@ -1,7 +1,8 @@
-﻿using Core_graph_api.Models;
+﻿using Core_graph_api.Dtos;
+using Core_graph_api.Models;
 using Core_graph_api.Services;
-using Core_graph_api.Dtos;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 
 //Documentacion: https://learn.microsoft.com/es-es/aspnet/core/web-api/?view=aspnetcore-10.0
@@ -59,6 +60,7 @@ namespace Core_graph_api.Controllers
 
         //GET: Peticion para obtener un usuario existente
         [HttpGet("user/{Id}")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<Node> GetUser(int Id)
         {
             Node? user = _graph_services.Search_User(Id);
@@ -110,6 +112,19 @@ namespace Core_graph_api.Controllers
             }
             _graph_services.Add_Edge(dt.SourceId, dt.TargetId);
             return StatusCode(StatusCodes.Status201Created);
+        }
+
+        [HttpGet("graph/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<Dictionary<string, List<string>>> GetGraph(int id)
+        {
+            Dictionary<string, List<string>> graph = _graph_services.BFS_Graph_all(id);
+            if (graph == null)
+            {
+                return NotFound();
+            }
+            return Ok(graph);
         }
     }
 }

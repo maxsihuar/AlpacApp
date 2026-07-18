@@ -3,12 +3,14 @@ import { OffCanvas, MainChat, ContainerChat, OffCanvasChat } from "./components.
 import { MessageSender, MessageReceiver } from "./components.js";
 import { LoginForm } from "./components.js";
 import { RegisterFomr } from "./components.js";
-import { ProfilePosts, ProfileInfo,ProfilePage, ContainerCards, CardPeople, MainPage, FriendsContainer,MediaContainer } from "./components.js";
+import { ProfilePosts, ProfileInfo, ProfilePage, ContainerCards, CardPeople, MainPage, FriendsContainer, MediaContainer } from "./components.js";
+import { MainGraph } from "./components.js";
 
 import { RequestUser } from "../service/client.js";
 import { RequestEntrar } from "../service/client.js";
 import { RequestRegistrar } from "../service/client.js";
 import { RequestAmigos } from "../service/client.js";
+import { RequestGraph } from "../service/client.js"
 import { RequesteLastMessage } from "../service/client.js"
 import { RequesteConversation } from "../service/client.js";
 import { ConnectWebSocket, RequestSendMessage } from "../service/client.js";
@@ -343,6 +345,61 @@ export function cargarProfilePage(idUsuario) {
     if (profileInfo) {
         profileInfo.innerHTML = ProfileInfo(esMiPerfil, esAmigo);
     }
+}
+
+export async function cargarGraph() {
+    cargarNavbar();
+    const navbar = document.querySelector('header');
+    if (navbar) {
+        navbar.insertAdjacentHTML("afterend", MainGraph);
+    }
+
+    const graph = new graphology.Graph();
+    try {
+        const graph_AlpacApp = await RequestGraph();
+
+        if (graph_AlpacApp && typeof graph_AlpacApp === "object") {
+            Object.entries(graph_AlpacApp).forEach(([origen, vecinos]) => {
+                if (!graph.hasNode(origen)) {
+                    graph.addNode(origen, {
+                        label: origen,
+                        x: Math.random() * 50,
+                        y: Math.random() * 50,
+                        size: 15,
+                        color: "#3b82f6"
+                    });
+                }
+
+                vecinos.forEach((vecino) => {
+                    if (!graph.hasNode(vecino)) {
+                        graph.addNode(vecino, {
+                            label: vecino,
+                            x: Math.random() * 50,
+                            y: Math.random() * 50,
+                            size: 10,
+                            color: "#10b981"
+                        });
+                    }
+                    if (!graph.hasEdge(origen, vecino)) {
+                        graph.addEdge(origen, vecino, {
+                            size: 3,
+                            color: "#9ca3af"    // Línea gris de conexión
+                        });
+                    }
+                });
+            });
+        }
+    } catch (error) {
+        console.log("Error al hacer la peticion del grafo", error);
+    }
+    
+    const container = document.getElementById("container-graph");
+    if (container == null) { console.log("No se encontro el contenedor del grafo"); }
+        const renderer = new Sigma(graph, container, {
+        allowInvalidContainer: true,
+        defaultNodeColor: "#6b7280",
+        defaultEdgeColor: "#e5e7eb"
+    });
 }
 
 // Evento unificado: Corre todo en orden secuencial estricto

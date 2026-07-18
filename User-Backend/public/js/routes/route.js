@@ -2,6 +2,7 @@ import { cargarLoginForm, cargarRegisterForm } from "../components/render.js";
 import { cargarMainPage } from "../components/render.js"
 import { cargarChatPage } from "../components/render.js"
 import { cargarProfilePage } from "../components/render.js";
+import { cargarGraph } from "../components/render.js";
 function limpiarBodyConservandoScripts() {
     const body = document.querySelector("body");
     if (!body) return;
@@ -35,6 +36,9 @@ const rutas = {
     },
     "/profile": () => {
         cargarProfilePage(localStorage.getItem("User"));
+    },
+    "/graph": () => {
+        cargarGraph();
     },
 };
 
@@ -85,7 +89,11 @@ function routeToProfile() {
     window.location.hash = "/profile";
 }
 function routeToChats() {
-    window.location.hash = "/chats"; }
+    window.location.hash = "/chats";}
+
+function routeToCGraph() {
+    window.location.hash = "/chats";
+}
 
 function initializeVars() {
     if (localStorage.getItem("Session") === null) {
