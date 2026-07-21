@@ -20,6 +20,7 @@ import {
     FriendRequestsContainer,
     FriendRequestCard,
     CardPeople,
+    CardPeople_f,
 
     // Vista del Gráfico (Sigma.js)
     MainGraph
@@ -65,21 +66,63 @@ function cargarNavbar() {
             const nombreBuscado = input.value.trim();
 
             const users = await RequesteSearchUser(nombreBuscado);
+            const friends = await RequestAmigos();
             const container = document.getElementById("friends-cards");
-
+            container.innerHTML = "";
             const txt = document.getElementById("txt-search");
             if (users.length === 0) { txt.textContent = "No se encontraron usuarios con ese nombre"; }
             else { txt.textContent = "Usuarios encontrados"; }
 
+            console.log(friends);
             users.forEach(user => {
-                container.insertAdjacentHTML(
-                    "beforeend",
-                    CardPeople(user)
-                );
+                if (!user) return;
+
+                const isFriend = friends.some(friend => friend.id === user.id);
+
+                if (isFriend) {
+                    container.insertAdjacentHTML(
+                        "beforeend",
+                        CardPeople_f(user)
+                    );
+                } else {
+                    container.insertAdjacentHTML(
+                        "beforeend",
+                        CardPeople(user)
+                    );
+                }
             });
+            document.querySelectorAll(".btn-ver-profile").forEach(btn => {
+
+                btn.addEventListener("click", () => {
+
+                    window.location.hash = `#/profile/${btn.dataset.id}`;
+
+                });
+
+            });
+
+            if (container && !container.dataset.searchListenerAttached) {
+                container.addEventListener("click", async (e) => {
+                    const btn = e.target.closest(".btn-add-friend");
+                    if (!btn || btn.disabled) return;
+
+                    btn.disabled = true;
+                    const receiverId = btn.dataset.id;
+                    const ok = await RequestSendFriendRequest(receiverId);
+
+                    if (ok) {
+                        alert("Solicitud enviada.");
+                        btn.textContent = "Enviada";
+                    } else {
+                        btn.disabled = false;
+                        alert("No se pudo enviar la solicitud.");
+                    }
+                });
+                container.dataset.searchListenerAttached = "true";
+            }
         }
         catch (error) {
-            console.log("Erroe al hacer la peticion -render-", error);
+            console.log("Error al hacer la peticion -render-", error);
         }
     });
 }
@@ -337,26 +380,6 @@ export async function cargarMainPage() {
         });
 
     });
-    document.querySelectorAll(".btn-add-friend").forEach(btn => {
-
-        btn.addEventListener("click", async () => {
-
-            const enviado = await RequestSendFriendRequest(btn.dataset.id);
-
-            if (enviado) {
-
-                btn.disabled = true;
-                btn.textContent = "Solicitud enviada";
-
-            } else {
-
-                alert("No se pudo enviar la solicitud.");
-
-            }
-
-        });
-
-    });
 
     const media = document.getElementById("media-section");
 
@@ -396,99 +419,77 @@ export async function cargarContainerSearch() {
 }
 
 export async function cargarFriendRequests() {
-
     const container = document.getElementById("friend-request-cards");
-
     if (!container) return;
+
+    if (!container.dataset.listenerAttached) {
+        container.addEventListener("click", async (e) => {
+            const btn = e.target.closest(".btn-accept-request");
+            if (!btn || btn.disabled) return;
+
+            btn.disabled = true;
+            const sourceId = btn.dataset.id;
+
+            const ok = await RequestAcceptFriendRequest(sourceId);
+
+            if (ok) {
+                alert("Solicitud aceptada.");
+                cargarFriendRequests();
+                cargarCardPeople();
+            } else {
+                btn.disabled = false;
+                alert("No se pudo aceptar la solicitud.");
+            }
+        });
+        container.dataset.listenerAttached = "true";
+    }
 
     container.innerHTML = "";
 
     try {
-
         const users = await RequestFriendRequests();
-
         console.log("Solicitudes recibidas:", users);
 
         users.forEach(user => {
-            container.insertAdjacentHTML(
-                "beforeend",
-                FriendRequestCard(user)
-            );
+            container.insertAdjacentHTML("beforeend", FriendRequestCard(user));
         });
-        document.querySelectorAll(".btn-accept-request").forEach(btn => {
-
-            btn.addEventListener("click", async () => {
-
-                const sourceId = btn.dataset.id;
-
-                const ok = await RequestAcceptFriendRequest(sourceId);
-
-                if (ok) {
-
-                    alert("Solicitud aceptada.");
-
-                    cargarFriendRequests();
-                    cargarCardPeople();
-
-                } else {
-
-                    alert("No se pudo aceptar la solicitud.");
-
-                }
-
-            });
-
-        });
-
     } catch (error) {
         console.error(error);
     }
-
 }
 
 export async function cargarCardPeople() {
-
     const container = document.getElementById("friends-cards");
-
     if (!container) return;
+
+    if (!container.dataset.listenerAttached) {
+        container.addEventListener("click", async (e) => {
+            const btn = e.target.closest(".btn-add-friend");
+            if (!btn || btn.disabled) return;
+
+            btn.disabled = true; 
+            const receiverId = btn.dataset.id;
+
+            const ok = await RequestSendFriendRequest(receiverId);
+
+            if (ok) {
+                alert("Solicitud enviada.");
+                btn.textContent = "Enviada";
+            } else {
+                btn.disabled = false;
+                alert("No se pudo enviar la solicitud.");
+            }
+        });
+        container.dataset.listenerAttached = "true";
+    }
 
     container.innerHTML = "";
 
     try {
-
         const users = await RequestSuggestedFriends();
-
         users.forEach(user => {
-            container.insertAdjacentHTML(
-                "beforeend",
-                CardPeople(user)
-            );
+            container.insertAdjacentHTML("beforeend", CardPeople(user));
         });
-        document.querySelectorAll(".btn-add-friend").forEach(btn => {
-
-            btn.addEventListener("click", async () => {
-
-                const receiverId = btn.dataset.id;
-
-                const ok = await RequestSendFriendRequest(receiverId);
-
-                if (ok) {
-
-                    alert("Solicitud enviada.");
-
-                    btn.disabled = true;
-                    btn.textContent = "Enviada";
-
-                } else {
-
-                    alert("No se pudo enviar la solicitud.");
-
-                }
-
-            });
-
-        });
-
     } catch (error) {
         console.error(error);
     }
